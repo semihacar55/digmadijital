@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Outlet, NavLink, useNavigate } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
 import {
@@ -16,7 +16,7 @@ import {
     Bell,
     Image as ImageIcon
 } from 'lucide-react';
-import { Button } from '../ui/Button';
+
 
 const AdminLayout = () => {
     const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -33,9 +33,10 @@ const AdminLayout = () => {
         { icon: FileText, label: 'Blog', path: '/admin/blog' },
         { icon: Briefcase, label: 'Vaka Çalışmaları', path: '/admin/case-studies' },
         { icon: Users, label: 'Ekip', path: '/admin/team' },
-        { icon: MessageSquare, label: 'Referanslar', path: '/admin/testimonials' },
+        { icon: MessageSquare, label: 'Referanslar', path: '/admin/referanslar' },
         { icon: ImageIcon, label: 'Medya', path: '/admin/media' },
         { icon: MessageSquare, label: 'Formlar', path: '/admin/forms' },
+        { icon: LayoutDashboard, label: 'Anasayfa', path: '/admin/homepage' },
         { icon: Settings, label: 'Ayarlar', path: '/admin/settings' },
     ];
 

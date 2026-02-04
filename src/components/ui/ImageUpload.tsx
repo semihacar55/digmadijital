@@ -41,8 +41,8 @@ export const ImageUpload = ({
             const { data } = supabase.storage.from(bucket).getPublicUrl(filePath);
             onChange(data.publicUrl);
 
-        } catch (error: any) {
-            alert('Yükleme hatası: ' + error.message);
+        } catch (error) {
+            alert('Yükleme hatası: ' + (error instanceof Error ? error.message : 'Bilinmeyen hata'));
         } finally {
             setUploading(false);
         }
@@ -64,7 +64,8 @@ export const ImageUpload = ({
                     <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                         <Button
                             type="button"
-                            variant="destructive"
+                            variant="secondary"
+                            className="bg-red-500/10 text-red-500 hover:bg-red-500/20 border-red-500/20"
                             size="sm"
                             onClick={handleRemove}
                         >

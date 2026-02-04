@@ -1,11 +1,6 @@
 import React from 'react';
 import { motion, type HTMLMotionProps } from 'framer-motion';
-import { clsx, type ClassValue } from 'clsx';
-import { twMerge } from 'tailwind-merge';
-
-function cn(...inputs: ClassValue[]) {
-    return twMerge(clsx(inputs));
-}
+import { cn } from '../../lib/utils';
 
 interface ButtonProps extends HTMLMotionProps<"button"> {
     variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'accent';

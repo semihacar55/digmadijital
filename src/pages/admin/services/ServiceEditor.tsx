@@ -59,7 +59,7 @@ const ServiceEditor = () => {
 
     const fetchService = async () => {
         setLoading(true);
-        const { data, error } = await supabase
+        const { data } = await supabase
             .from('services')
             .select('*')
             .eq('id', id)
@@ -248,7 +248,6 @@ const ServiceEditor = () => {
                                         </label>
                                         <div className="hidden">
                                             <ImageUpload
-                                                id="content-image-upload"
                                                 onChange={handleContentImageUpload}
                                             // We don't bind value here because we just want the callback
                                             />

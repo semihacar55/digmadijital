@@ -1,5 +1,5 @@
 
-import { Card } from '../ui/Card';
+import { GradientCard } from '../ui/GradientCard';
 import { Star } from 'lucide-react';
 
 const testimonials = [
@@ -24,7 +24,7 @@ const Testimonials = () => {
     return (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {testimonials.map((t, i) => (
-                <Card key={i} className="bg-gradient-to-br from-secondary to-secondary/50">
+                <GradientCard key={i} className="bg-gradient-to-br from-secondary to-secondary/50">
                     <div className="flex gap-1 mb-4 text-accent-green">
                         {[...Array(5)].map((_, i) => <Star key={i} size={16} fill="currentColor" />)}
                     </div>
@@ -38,7 +38,7 @@ const Testimonials = () => {
                             <p className="text-xs text-text-muted">{t.role}</p>
                         </div>
                     </div>
-                </Card>
+                </GradientCard>
             ))}
         </div>
     );

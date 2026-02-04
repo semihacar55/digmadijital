@@ -3,14 +3,126 @@ import { Helmet } from 'react-helmet-async';
 import { CheckCircle, Users } from 'lucide-react';
 import { Section } from '../components/ui/Section';
 import { Button } from '../components/ui/Button';
-import { Card } from '../components/ui/Card';
+import { GradientCard } from '../components/ui/GradientCard';
 import { ServicesGrid } from '../components/sections/ServicesGrid';
 import { Testimonials } from '../components/sections/Testimonials';
 import { FadeIn } from '../components/animations/FadeIn';
 import { StaggeredText } from '../components/animations/StaggeredText';
 import { GradientDots } from '../components/ui/gradient-dots';
+import { supabase } from '../lib/supabase';
+import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+
+interface CaseStudy {
+    id: string;
+    title: string;
+    slug: string;
+    excerpt: string;
+    cover_image: string;
+    sector: string;
+}
+
+interface BlogPost {
+    id: string;
+    title: string;
+    slug: string;
+    summary: string;
+    cover_image: string;
+    category: string;
+    published_at: string;
+}
+
+interface HomepageSection {
+    section_key: string;
+    title: string;
+    description: string | null;
+    cta_label: string | null;
+    cta_href: string | null;
+    is_enabled: boolean;
+    settings: Record<string, unknown>;
+}
 
 const Home = () => {
+    const [featuredCaseStudies, setFeaturedCaseStudies] = useState<CaseStudy[]>([]);
+    const [loadingCaseStudies, setLoadingCaseStudies] = useState(true);
+    const [featuredBlogPosts, setFeaturedBlogPosts] = useState<BlogPost[]>([]);
+    const [loadingBlogPosts, setLoadingBlogPosts] = useState(true);
+    const [sections, setSections] = useState<Record<string, HomepageSection>>({});
+
+    useEffect(() => {
+        fetchFeaturedCaseStudies();
+        fetchFeaturedBlogPosts();
+        fetchHomepageSections();
+    }, []);
+
+    const fetchFeaturedCaseStudies = async () => {
+        try {
+            const { data, error } = await supabase
+                .from('case_studies')
+                .select('id, title, slug, excerpt, cover_image, sector')
+                .eq('status', 'published')
+                .eq('is_featured', true)
+                .order('featured_order', { ascending: true })
+                .limit(3);
+
+            if (error) throw error;
+            setFeaturedCaseStudies(data || []);
+        } catch (error) {
+            console.error('Error fetching featured case studies:', error);
+        } finally {
+            setLoadingCaseStudies(false);
+        }
+    };
+
+    const fetchFeaturedBlogPosts = async () => {
+        try {
+            const { data, error } = await supabase
+                .from('posts')
+                .select('id, title, slug, summary, cover_image, category, published_at')
+                .eq('status', 'published')
+                .eq('is_featured', true)
+                .order('featured_order', { ascending: true })
+                .limit(3);
+
+            if (error) throw error;
+            setFeaturedBlogPosts(data || []);
+        } catch (error) {
+            console.error('Error fetching featured blog posts:', error);
+        } finally {
+            setLoadingBlogPosts(false);
+        }
+    };
+
+    const fetchHomepageSections = async () => {
+        try {
+            const { data, error } = await supabase
+                .from('homepage_sections')
+                .select('*')
+                .eq('is_enabled', true);
+
+            if (error) throw error;
+
+            const sectionsMap: Record<string, HomepageSection> = {};
+            (data || []).forEach((section: HomepageSection) => {
+                sectionsMap[section.section_key] = section;
+            });
+            setSections(sectionsMap);
+        } catch (error) {
+            console.error('Error fetching homepage sections:', error);
+        }
+    };
+
+    const getSection = (key: string, defaults: Partial<HomepageSection>) => {
+        return sections[key] || {
+            section_key: key,
+            title: defaults.title || '',
+            description: defaults.description || null,
+            cta_label: defaults.cta_label || null,
+            cta_href: defaults.cta_href || null,
+            is_enabled: true,
+            settings: defaults.settings || {},
+        } as HomepageSection;
+    };
     return (
         <>
             <Helmet>
@@ -46,14 +158,14 @@ const Home = () => {
 
                         <FadeIn delay={0.4}>
                             <p className="text-xl md:text-2xl text-text-muted mb-10 max-w-2xl mx-auto leading-relaxed">
-                                Performans pazarlama, veri analizi ve kreatif stratejilerle dijital dünyada işletmenize değer katıyoruz.
+                                {getSection('hero', { description: 'Performans pazarlama, veri analizi ve kreatif stratejilerle dijital dünyada işletmenize değer katıyoruz.' }).description}
                             </p>
                         </FadeIn>
 
                         <FadeIn delay={0.6}>
                             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
                                 <Button variant="accent" size="lg" className="w-full sm:w-auto" onClick={() => document.getElementById('analysis-form')?.scrollIntoView({ behavior: 'smooth' })}>
-                                    Ücretsiz Analiz Al
+                                    {getSection('hero', { cta_label: 'Ücretsiz Analiz Al' }).cta_label}
                                 </Button>
                                 <Button variant="outline" size="lg" className="w-full sm:w-auto">
                                     Toplantı Planla
@@ -115,8 +227,8 @@ const Home = () => {
                         <div className="aspect-square rounded-3xl bg-gradient-to-tr from-accent-blue/20 to-accent-green/20 backdrop-blur-3xl border border-white/10 p-8 flex items-center justify-center relative overflow-hidden">
                             {/* Abstract Visual Placeholder */}
                             <div className="grid grid-cols-2 gap-4 w-full">
-                                <Card className="bg-primary/80 border-0 shadow-2xl skew-y-6 translate-y-8"><div className="h-32"></div></Card>
-                                <Card className="bg-primary/80 border-0 shadow-2xl -skew-y-6"><div className="h-32"></div></Card>
+                                <GradientCard className="bg-primary/80 border-0 shadow-2xl skew-y-6 translate-y-8"><div className="h-32"></div></GradientCard>
+                                <GradientCard className="bg-primary/80 border-0 shadow-2xl -skew-y-6"><div className="h-32"></div></GradientCard>
                             </div>
                         </div>
                     </div>
@@ -148,25 +260,58 @@ const Home = () => {
             <Section className="bg-secondary/20">
                 <div className="flex justify-between items-end mb-12">
                     <div>
-                        <h2 className="text-3xl md:text-5xl font-bold mb-4">Başarı Hikayeleri</h2>
-                        <p className="text-text-muted">Rakamlarla kanıtlanmış sonuçlar.</p>
+                        <h2 className="text-3xl md:text-5xl font-bold mb-4">{getSection('case_studies', { title: 'Başarı Hikayeleri' }).title}</h2>
+                        <p className="text-text-muted">{getSection('case_studies', { description: 'Rakamlarla kanıtlanmış sonuçlar.' }).description}</p>
                     </div>
-                    <Button variant="outline" className="hidden md:inline-flex">Tümünü Gör</Button>
+                    <Link to={getSection('case_studies', { cta_href: '/vaka-calismalari' }).cta_href || '/vaka-calismalari'}>
+                        <Button variant="outline" className="hidden md:inline-flex">{getSection('case_studies', { cta_label: 'Tümünü Gör' }).cta_label}</Button>
+                    </Link>
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    {[1, 2, 3].map((i) => (
-                        <div key={i} className="group cursor-pointer">
-                            <div className="aspect-[4/3] bg-white/5 rounded-2xl mb-4 overflow-hidden relative">
-                                <div className="absolute inset-0 bg-accent-blue/10 group-hover:bg-accent-blue/20 transition-colors" />
-                                {/* Image placeholder would go here */}
+
+                {loadingCaseStudies ? (
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        {[1, 2, 3].map((i) => (
+                            <div key={i} className="animate-pulse">
+                                <div className="aspect-[4/3] bg-white/5 rounded-2xl mb-4" />
+                                <div className="h-6 bg-white/5 rounded mb-2 w-3/4" />
+                                <div className="h-4 bg-white/5 rounded w-1/2" />
                             </div>
-                            <h3 className="text-xl font-bold mb-2 group-hover:text-accent-blue transition-colors">E-ticaret Markası %150 ROAS Artışı</h3>
-                            <p className="text-text-muted text-sm">Google Ads Stratejisi</p>
-                        </div>
-                    ))}
-                </div>
+                        ))}
+                    </div>
+                ) : featuredCaseStudies.length > 0 ? (
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        {featuredCaseStudies.map((study) => (
+                            <Link key={study.id} to={`/vaka-calismalari/${study.slug}`}>
+                                <div className="group cursor-pointer">
+                                    <div className="aspect-[4/3] bg-white/5 rounded-2xl mb-4 overflow-hidden relative">
+                                        {study.cover_image ? (
+                                            <img
+                                                src={study.cover_image}
+                                                alt={study.title}
+                                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                                            />
+                                        ) : (
+                                            <div className="absolute inset-0 bg-accent-blue/10 group-hover:bg-accent-blue/20 transition-colors" />
+                                        )}
+                                    </div>
+                                    <h3 className="text-xl font-bold mb-2 group-hover:text-accent-blue transition-colors">
+                                        {study.title}
+                                    </h3>
+                                    <p className="text-text-muted text-sm">{study.sector}</p>
+                                </div>
+                            </Link>
+                        ))}
+                    </div>
+                ) : (
+                    <div className="text-center py-12">
+                        <p className="text-text-muted">Henüz başarı hikayesi eklenmedi.</p>
+                    </div>
+                )}
+
                 <div className="mt-8 text-center md:hidden">
-                    <Button variant="outline">Tümünü Gör</Button>
+                    <Link to="/vaka-calismalari">
+                        <Button variant="outline">Tümünü Gör</Button>
+                    </Link>
                 </div>
             </Section>
 
@@ -202,23 +347,53 @@ const Home = () => {
             {/* Blog Preview */}
             <Section>
                 <div className="flex justify-between items-end mb-12">
-                    <h2 className="text-3xl md:text-4xl font-bold">Dijital Rehber</h2>
-                    <LinkContainer to="/blog" className="text-accent-blue hover:text-white transition-colors text-sm font-medium">Tüm Yazılar &rarr;</LinkContainer>
+                    <h2 className="text-3xl md:text-4xl font-bold">{getSection('blog', { title: 'Dijital Rehber' }).title}</h2>
+                    <Link to={getSection('blog', { cta_href: '/blog' }).cta_href || '/blog'} className="text-accent-blue hover:text-white transition-colors text-sm font-medium">{getSection('blog', { cta_label: 'Tüm Yazılar' }).cta_label} &rarr;</Link>
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    {[1, 2, 3].map((i) => (
-                        <div key={i} className="group">
-                            <div className="h-48 bg-secondary rounded-xl mb-4" />
-                            <span className="text-accent-blue text-xs font-bold uppercase tracking-wider">Rehber</span>
-                            <h3 className="text-lg font-bold mt-2 mb-3 leading-snug group-hover:text-accent-blue transition-colors">
-                                2026 Dijital Pazarlama Trendleri: Yapay Zeka Devrimi
-                            </h3>
-                            <p className="text-text-muted text-sm line-clamp-2">
-                                Gelecek yıl pazarlama stratejilerinizi belirlerken dikkat etmeniz gerekenler...
-                            </p>
-                        </div>
-                    ))}
-                </div>
+
+                {loadingBlogPosts ? (
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        {[1, 2, 3].map((i) => (
+                            <div key={i} className="animate-pulse">
+                                <div className="h-48 bg-white/5 rounded-xl mb-4" />
+                                <div className="h-4 bg-white/5 rounded mb-2 w-1/4" />
+                                <div className="h-6 bg-white/5 rounded mb-3 w-3/4" />
+                                <div className="h-4 bg-white/5 rounded w-full" />
+                            </div>
+                        ))}
+                    </div>
+                ) : featuredBlogPosts.length > 0 ? (
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        {featuredBlogPosts.map((post) => (
+                            <Link key={post.id} to={`/blog/${post.slug}`}>
+                                <div className="group">
+                                    <div className="h-48 bg-secondary rounded-xl mb-4 overflow-hidden">
+                                        {post.cover_image ? (
+                                            <img
+                                                src={post.cover_image}
+                                                alt={post.title}
+                                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                                            />
+                                        ) : (
+                                            <div className="w-full h-full bg-gradient-to-br from-accent-blue/20 to-accent-green/10" />
+                                        )}
+                                    </div>
+                                    <span className="text-accent-blue text-xs font-bold uppercase tracking-wider">{post.category || 'Rehber'}</span>
+                                    <h3 className="text-lg font-bold mt-2 mb-3 leading-snug group-hover:text-accent-blue transition-colors">
+                                        {post.title}
+                                    </h3>
+                                    <p className="text-text-muted text-sm line-clamp-2">
+                                        {post.summary}
+                                    </p>
+                                </div>
+                            </Link>
+                        ))}
+                    </div>
+                ) : (
+                    <div className="text-center py-12">
+                        <p className="text-text-muted">Henüz blog yazısı eklenmedi.</p>
+                    </div>
+                )}
             </Section>
 
             {/* Final CTA / Contact Form */}
@@ -273,8 +448,5 @@ const Home = () => {
         </>
     );
 };
-
-// Helper for Link to avoid circular dependencies if needed, or just use Link from router
-import { Link as LinkContainer } from 'react-router-dom';
 
 export default Home;

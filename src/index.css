@@ -48,7 +48,35 @@
     text-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
   }
 
-  .glass-card {
-    @apply bg-white/5 backdrop-blur-lg border border-white/10 shadow-xl;
+  .bg-radial-vignette {
+    background: radial-gradient(circle at center, transparent 0%, rgba(0, 0, 0, 0.6) 100%);
+  }
+
+  .animate-float-slow {
+    animation: float 20s ease-in-out infinite;
+  }
+
+  .animate-float-medium {
+    animation: float 15s ease-in-out infinite reverse;
+  }
+}
+
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+
+  25% {
+    transform: translate(10px, -15px);
+  }
+
+  50% {
+    transform: translate(-5px, 10px);
+  }
+
+  75% {
+    transform: translate(-15px, -5px);
   }
 }

@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { supabase } from '../../../lib/supabase';
 import { Button } from '../../../components/ui/Button';
 import { Input } from '../../../components/ui/Input';
-import { Plus, Search, Edit, Trash2, Eye, FileText } from 'lucide-react';
+import { Plus, Search, Edit, Trash2, FileText } from 'lucide-react';
 import { FadeIn } from '../../../components/animations/FadeIn';
 
 interface Service {

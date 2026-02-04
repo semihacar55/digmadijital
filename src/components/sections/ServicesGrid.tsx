@@ -1,13 +1,13 @@
 
 import { useEffect, useState } from 'react';
 import { ArrowRight, BarChart2, Search, Share2, PenTool, TrendingUp, ShoppingBag, PieChart, Box } from 'lucide-react';
-import { Card } from '../ui/Card';
+import { GradientCard } from '../ui/GradientCard';
 import { Link } from 'react-router-dom';
 import { FadeIn } from '../animations/FadeIn';
 import { supabase } from '../../lib/supabase';
 
 // Map icon names (string) to Lucide components
-const iconMap: any = {
+const iconMap: Record<string, React.ComponentType<{ size?: number; className?: string }>> = {
     BarChart2, Search, Share2, PenTool, TrendingUp, ShoppingBag, PieChart, Box
 };
 
@@ -25,7 +25,7 @@ const ServicesGrid = () => {
 
     useEffect(() => {
         const fetchServices = async () => {
-            const { data, error } = await supabase
+            const { data } = await supabase
                 .from('services')
                 .select('*')
                 .eq('status', 'published')
@@ -59,7 +59,7 @@ const ServicesGrid = () => {
                 return (
                     <FadeIn key={service.id} delay={index * 0.1} fullWidth>
                         <Link to={`/hizmetler/${service.slug}`} className="block h-full group">
-                            <Card className="h-full flex flex-col hover:border-accent-blue/50 transition-colors">
+                            <GradientCard className="h-full flex flex-col hover:border-accent-blue/50 transition-colors">
                                 <div className="mb-6 p-4 bg-white/5 rounded-xl w-fit group-hover:bg-accent-blue/20 transition-colors">
                                     <IconComponent className="w-8 h-8 text-accent-blue group-hover:text-blue-400" />
                                 </div>
@@ -72,7 +72,7 @@ const ServicesGrid = () => {
                                 <div className="flex items-center text-sm font-medium text-white group-hover:gap-2 transition-all">
                                     İncele <ArrowRight className="w-4 h-4 ml-2" />
                                 </div>
-                            </Card>
+                            </GradientCard>
                         </Link>
                     </FadeIn>
                 );

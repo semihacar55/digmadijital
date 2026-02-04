@@ -1,60 +1,76 @@
-import React from 'react';
-import { motion, type HTMLMotionProps } from 'framer-motion';
-import { cn } from './Button'; // Re-use cn utility
+import * as React from "react"
 
-interface CardProps extends HTMLMotionProps<"div"> {
-    hoverEffect?: boolean;
-}
+import { cn } from "@/lib/utils"
 
-const Card = React.forwardRef<HTMLDivElement, CardProps>(
-    ({ className, children, hoverEffect = true, ...props }, ref) => {
-        const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-            const { currentTarget, clientX, clientY } = e;
-            const { left, top } = currentTarget.getBoundingClientRect();
-            const mouseX = clientX - left;
-            const mouseY = clientY - top;
-            currentTarget.style.setProperty("--mouse-x", `${mouseX}px`);
-            currentTarget.style.setProperty("--mouse-y", `${mouseY}px`);
-        };
+const Card = React.forwardRef<
+    HTMLDivElement,
+    React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+    <div
+        ref={ref}
+        className={cn(
+            "rounded-xl border bg-card text-card-foreground shadow",
+            className
+        )}
+        {...props}
+    />
+))
+Card.displayName = "Card"
 
-        return (
-            <motion.div
-                ref={ref}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                whileHover={hoverEffect ? { y: -5, transition: { duration: 0.2 } } : undefined}
-                onMouseMove={handleMouseMove}
-                className={cn(
-                    "relative group bg-secondary/50 backdrop-blur-sm border border-white/5 rounded-2xl p-6 h-full overflow-hidden",
-                    className
-                )}
-                {...props}
-            >
-                {/* Radial Gradient Highlight on Hover */}
-                <div
-                    className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-                    style={{
-                        background: `radial-gradient(600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255,255,255,0.06), transparent 40%)`
-                    }}
-                />
-                {/* Border Glow */}
-                <div
-                    className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-                    style={{
-                        background: `radial-gradient(600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255,255,255,0.1), transparent 40%)`,
-                        zIndex: 0
-                    }}
-                />
+const CardHeader = React.forwardRef<
+    HTMLDivElement,
+    React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+    <div
+        ref={ref}
+        className={cn("flex flex-col space-y-1.5 p-6", className)}
+        {...props}
+    />
+))
+CardHeader.displayName = "CardHeader"
 
-                <div className="relative z-10">
-                    {children as React.ReactNode}
-                </div>
-            </motion.div>
-        );
-    }
-);
+const CardTitle = React.forwardRef<
+    HTMLParagraphElement,
+    React.HTMLAttributes<HTMLHeadingElement>
+>(({ className, ...props }, ref) => (
+    <h3
+        ref={ref}
+        className={cn("font-semibold leading-none tracking-tight", className)}
+        {...props}
+    />
+))
+CardTitle.displayName = "CardTitle"
 
-Card.displayName = "Card";
+const CardDescription = React.forwardRef<
+    HTMLParagraphElement,
+    React.HTMLAttributes<HTMLParagraphElement>
+>(({ className, ...props }, ref) => (
+    <p
+        ref={ref}
+        className={cn("text-sm text-muted-foreground", className)}
+        {...props}
+    />
+))
+CardDescription.displayName = "CardDescription"
 
-export { Card };
+const CardContent = React.forwardRef<
+    HTMLDivElement,
+    React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+    <div ref={ref} className={cn("p-6 pt-0", className)} {...props} />
+))
+CardContent.displayName = "CardContent"
+
+const CardFooter = React.forwardRef<
+    HTMLDivElement,
+    React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+    <div
+        ref={ref}
+        className={cn("flex items-center p-6 pt-0", className)}
+        {...props}
+    />
+))
+CardFooter.displayName = "CardFooter"
+
+export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent }

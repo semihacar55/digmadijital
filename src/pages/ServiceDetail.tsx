@@ -114,24 +114,26 @@ const ServiceDetail = () => {
                 {faqJsonLd && <script type="application/ld+json">{JSON.stringify(faqJsonLd)}</script>}
             </Helmet>
 
-            <div className="min-h-screen pt-24 lg:pt-32 pb-20">
-                {/* HERO SECTION */}
-                <Section className="py-10 lg:py-32 relative overflow-hidden">
-                    {/* Animated Background */}
-                    <div className="absolute inset-0 pointer-events-none">
-                        {/* Primary Glow */}
-                        <div
-                            className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-accent-blue/20 rounded-full blur-[100px] opacity-20 sm:opacity-30 animate-pulse"
-                            style={{ animationDuration: '8s' }}
-                        />
-                        {/* Secondary Glow */}
-                        <div
-                            className="absolute bottom-[0%] right-[-5%] w-[400px] h-[400px] bg-purple-500/10 rounded-full blur-[80px] opacity-20 sm:opacity-30"
-                        />
-                        {/* Noise Overlay */}
-                        <div className="absolute inset-0 opacity-[0.03] mix-blend-overlay bg-[url('/noise.svg')] bg-repeat" />
-                    </div>
+            <div className="min-h-screen relative overflow-hidden">
+                {/* GLOBAL BACKGROUND - Moved here for seamless continuity */}
+                <div className="absolute inset-0 pointer-events-none z-0">
+                    {/* Primary Glow */}
+                    <div
+                        className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-accent-blue/20 rounded-full blur-[100px] opacity-20 sm:opacity-30 animate-pulse"
+                        style={{ animationDuration: '8s' }}
+                    />
+                    {/* Secondary Glow */}
+                    <div
+                        className="absolute bottom-[0%] right-[-5%] w-[400px] h-[400px] bg-purple-500/10 rounded-full blur-[80px] opacity-20 sm:opacity-30"
+                    />
+                    {/* Noise Overlay */}
+                    <div className="absolute inset-0 opacity-[0.03] mix-blend-overlay bg-[url('/noise.svg')] bg-repeat" />
+                </div>
 
+                {/* HERO SECTION */}
+                {/* Padding logic: pt-24 (mobile header clearance) + pt-6 (visual gap) = ~30px visually */}
+                {/* Desktop: pt-32 (header) + pt-14 (visual gap) = ~56px visually */}
+                <Section className="relative z-10 pt-24 pb-10 lg:pt-32 lg:pb-20">
                     <div className="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 bg-accent-blue/10 rounded-full blur-3xl pointer-events-none hidden lg:block" />
                     <div className="container mx-auto px-4 relative z-10">
                         <FadeIn>
