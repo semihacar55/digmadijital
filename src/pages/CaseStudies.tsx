@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { PremiumBackground } from '../components/ui/PremiumBackground';
+import { PageHero } from '../components/ui/PageHero';
 import { FadeIn } from '../components/animations/FadeIn';
 import { Helmet } from 'react-helmet-async';
 import { ArrowRight, Briefcase } from 'lucide-react';
@@ -56,20 +57,14 @@ const CaseStudies = () => {
                 <meta name="description" content="Markalar için yarattığımız başarı hikayeleri ve dijital dönüşüm projeleri." />
             </Helmet>
 
-            <div className="pt-32 pb-20 px-4">
+            <PageHero
+                title="Başarı Hikayeleri"
+                subtitle="İş ortaklarımız için veriye dayalı stratejilerle nasıl değer yarattığımızı keşfedin."
+                breadcrumb={[{ label: 'Digma' }, { label: 'Vaka Çalışmaları' }]}
+            />
+
+            <div className="pb-20 px-4">
                 <div className="container mx-auto">
-                    {/* Header */}
-                    <FadeIn>
-                        <div className="text-center max-w-2xl mx-auto mb-16 relative">
-                            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-accent-blue/10 blur-[80px] rounded-full pointer-events-none"></div>
-                            <h1 className="text-5xl md:text-6xl font-display font-bold mb-6 tracking-tight relative z-10">
-                                Başarı <span className="text-gradient">Hikayeleri</span>
-                            </h1>
-                            <p className="text-xl text-text-muted relative z-10">
-                                İş ortaklarımız için veriye dayalı stratejilerle nasıl değer yarattığımızı keşfedin.
-                            </p>
-                        </div>
-                    </FadeIn>
 
                     {/* Filter */}
                     <FadeIn delay={0.1}>
@@ -79,8 +74,8 @@ const CaseStudies = () => {
                                     key={sector}
                                     onClick={() => setActiveFilter(sector)}
                                     className={`px-6 py-2.5 rounded-full text-sm font-medium transition-all duration-300 border ${activeFilter === sector
-                                            ? 'bg-accent-blue text-white border-accent-blue shadow-lg shadow-accent-blue/20'
-                                            : 'bg-white/5 text-text-muted border-white/10 hover:bg-white/10 hover:border-white/20'
+                                        ? 'bg-accent-blue text-white border-accent-blue shadow-lg shadow-accent-blue/20'
+                                        : 'bg-white/5 text-text-muted border-white/10 hover:bg-white/10 hover:border-white/20'
                                         }`}
                                 >
                                     {sector}

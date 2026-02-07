@@ -27,6 +27,12 @@ import MediaLibrary from './pages/admin/media/MediaLibrary';
 import FormSubmissionsList from './pages/admin/forms/FormSubmissionsList';
 import Settings from './pages/admin/settings/Settings';
 import HomepageManager from './pages/admin/homepage/HomepageManager';
+import WhyDigmaEditor from './pages/admin/homepage/WhyDigmaEditor';
+import LogosManager from './pages/admin/homepage/LogosManager';
+import HeaderManager from './pages/admin/header/HeaderManager';
+import FooterManager from './pages/admin/footer/FooterManager';
+import AboutPageManager from './pages/admin/pages/AboutPageManager';
+import ContactPageManager from './pages/admin/pages/ContactPageManager';
 
 const router = createBrowserRouter([
   {
@@ -161,7 +167,32 @@ const router = createBrowserRouter([
             path: "homepage",
             element: <HomepageManager />,
           },
+          {
+            path: "homepage/why-digma",
+            element: <WhyDigmaEditor />,
+          },
+          {
+            path: "homepage/logos",
+            element: <LogosManager />,
+          },
+          {
+            path: "header",
+            element: <HeaderManager />,
+          },
+          {
+            path: "footer",
+            element: <FooterManager />,
+          },
+          {
+            path: "pages/about",
+            element: <AboutPageManager />,
+          },
+          {
+            path: "pages/contact",
+            element: <ContactPageManager />,
+          },
         ],
+
       },
     ],
   },

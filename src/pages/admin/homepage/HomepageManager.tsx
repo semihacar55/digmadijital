@@ -113,13 +113,15 @@ const HomepageManager = () => {
     const getSectionLabel = (key: string) => {
         const labels: Record<string, string> = {
             hero: 'Hero / Ana Banner',
+            logos: 'Referans Logoları',
             services: 'Hizmetler',
+            why_digma: 'Neden Digma?',
             how_it_works: 'Nasıl Çalışırız',
             case_studies: 'Başarı Hikayeleri',
-            testimonials: 'Referanslar',
+            testimonials: 'Müşteri Yorumları',
             team: 'Ekip',
             blog: 'Dijital Rehber (Blog)',
-            final_cta: 'Final CTA'
+            final_cta: 'Final CTA / İletişim Formu'
         };
         return labels[key] || key;
     };
@@ -151,8 +153,8 @@ const HomepageManager = () => {
                             <div
                                 key={section.id}
                                 className={`p-4 rounded-lg border transition-colors ${editingSection?.id === section.id
-                                        ? 'bg-accent-blue/10 border-accent-blue'
-                                        : 'bg-secondary/50 border-white/5 hover:border-white/10'
+                                    ? 'bg-accent-blue/10 border-accent-blue'
+                                    : 'bg-secondary/50 border-white/5 hover:border-white/10'
                                     }`}
                             >
                                 <div className="flex items-center justify-between mb-2">

@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { FadeIn } from '../components/animations/FadeIn';
 import { PremiumBackground } from '../components/ui/PremiumBackground';
+import { PageHero } from '../components/ui/PageHero';
 import { Helmet } from 'react-helmet-async';
 import { ArticleCard } from '../components/ui/blog-post-card';
 
@@ -51,22 +52,14 @@ const Blog = () => {
                 <meta name="description" content="Dijital pazarlama, web tasarım ve teknoloji dünyasından güncel haberler ve ipuçları." />
             </Helmet>
 
-            <div className="pt-32 pb-20 px-4">
+            <PageHero
+                title="Blog & İçgörüler"
+                subtitle="Dijital dünyadaki trendler, stratejiler ve başarı hikayeleri."
+                breadcrumb={[{ label: 'Digma' }, { label: 'Blog' }]}
+            />
+
+            <div className="pb-20 px-4">
                 <div className="container mx-auto">
-                    <FadeIn>
-                        <div className="text-center max-w-2xl mx-auto mb-20 relative">
-                            {/* Decorative glow behind title */}
-                            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-accent-blue/20 blur-[60px] rounded-full pointer-events-none"></div>
-
-                            <h1 className="text-5xl md:text-6xl font-display font-bold mb-6 tracking-tight relative z-10">
-                                Blog & <span className="text-gradient">İçgörüler</span>
-                            </h1>
-                            <p className="text-xl text-text-muted relative z-10">
-                                Dijital dünyadaki trendler, stratejiler ve başarı hikayeleri.
-                            </p>
-                        </div>
-                    </FadeIn>
-
                     {loading ? (
                         <div className="flex justify-center items-center py-40">
                             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-accent-blue"></div>
@@ -97,7 +90,7 @@ const Blog = () => {
                     )}
                 </div>
             </div>
-        </PremiumBackground>
+        </PremiumBackground >
     );
 };
 

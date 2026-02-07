@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, ArrowRight, ChevronDown } from 'lucide-react';
 import { Button } from '../ui/Button';
 import { cn } from '../ui/Button'; // Assuming cn utility is here, or import from utils
 import { supabase } from '../../lib/supabase';
+import { getLayoutSettings, getDefaultLayoutSettings, type HeaderMenuItem } from '../../services/layout.service';
 
 interface Service {
     id: string;
@@ -18,13 +19,40 @@ const Header = () => {
     const [scrolled, setScrolled] = useState(false);
     const [services, setServices] = useState<Service[]>([]);
     const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
+    const [logoUrl, setLogoUrl] = useState<string | null>(null);
+    const [logoAlt, setLogoAlt] = useState('Digma Logo');
+    const [headerMenu, setHeaderMenu] = useState<HeaderMenuItem[]>([]);
+    const [ctaLabel, setCtaLabel] = useState('Ücretsiz Analiz Al');
+    const [ctaHref, setCtaHref] = useState('/#ucretsiz-analiz');
+    const [ctaEnabled, setCtaEnabled] = useState(true);
     const location = useLocation();
+    const navigate = useNavigate();
 
     useEffect(() => {
         const handleScroll = () => {
             setScrolled(window.scrollY > 50);
         };
         window.addEventListener('scroll', handleScroll);
+
+        // Fetch layout settings
+        const fetchLayoutSettings = async () => {
+            const settings = await getLayoutSettings();
+            if (settings) {
+                setLogoUrl(settings.header_logo_url);
+                setLogoAlt(settings.header_logo_alt);
+                setHeaderMenu(settings.header_menu || []);
+                setCtaLabel(settings.header_cta_label);
+                setCtaHref(settings.header_cta_href);
+                setCtaEnabled(settings.header_cta_enabled);
+            } else {
+                // Use defaults
+                const defaults = getDefaultLayoutSettings();
+                setHeaderMenu(defaults.header_menu || []);
+                setCtaLabel(defaults.header_cta_label || 'Ücretsiz Analiz Al');
+                setCtaHref(defaults.header_cta_href || '/#ucretsiz-analiz');
+            }
+        };
+        fetchLayoutSettings();
 
         // Fetch services for dropdown
         const fetchServices = async () => {
@@ -47,6 +75,18 @@ const Header = () => {
         setIsOpen(false);
         setMobileServicesOpen(false);
     }, [location]);
+
+    const handleAnalysisClick = () => {
+        if (location.pathname === '/') {
+            const element = document.getElementById('ucretsiz-analiz');
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        } else {
+            navigate('/#ucretsiz-analiz');
+        }
+        setIsOpen(false);
+    };
 
     return (
         <header
@@ -107,7 +147,7 @@ const Header = () => {
                         <span>EN</span>
                     </button>
 
-                    <Button variant="accent" size="sm" className="hidden md:inline-flex" onClick={() => document.getElementById('analysis-form')?.scrollIntoView({ behavior: 'smooth' })}>
+                    <Button variant="accent" size="sm" className="hidden md:inline-flex" onClick={handleAnalysisClick}>
                         Ücretsiz Analiz Al
                     </Button>
 
@@ -171,7 +211,7 @@ const Header = () => {
                             <Link to="/blog" className="text-lg font-medium text-white/80 hover:text-white transition-colors">Blog</Link>
                             <Link to="/iletisim" className="text-lg font-medium text-white/80 hover:text-white transition-colors">İletişim</Link>
 
-                            <Button variant="accent" className="mt-4 w-full justify-between group">
+                            <Button variant="accent" className="mt-4 w-full justify-between group" onClick={handleAnalysisClick}>
                                 Ücretsiz Analiz Al
                                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                             </Button>

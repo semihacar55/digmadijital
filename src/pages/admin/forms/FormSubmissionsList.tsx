@@ -18,6 +18,8 @@ export interface FormSubmission {
     metadata?: Record<string, unknown>;
     notes?: string;
     created_at: string;
+    email_status?: string;
+    email_error?: string;
 }
 
 const FormSubmissionsList = () => {
@@ -156,14 +158,15 @@ const FormSubmissionsList = () => {
                                     <th className="p-4 font-medium">Form Tipi</th>
                                     <th className="p-4 font-medium">İletişim</th>
                                     <th className="p-4 font-medium">Durum</th>
+                                    <th className="p-4 font-medium">Mail</th>
                                     <th className="p-4 font-medium text-right">İşlem</th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-white/5">
                                 {loading ? (
-                                    <tr><td colSpan={6} className="p-8 text-center text-text-muted">Yükleniyor...</td></tr>
+                                    <tr><td colSpan={7} className="p-8 text-center text-text-muted">Yükleniyor...</td></tr>
                                 ) : filteredSubmissions.length === 0 ? (
-                                    <tr><td colSpan={6} className="p-8 text-center text-text-muted">Kayıt bulunamadı.</td></tr>
+                                    <tr><td colSpan={7} className="p-8 text-center text-text-muted">Kayıt bulunamadı.</td></tr>
                                 ) : (
                                     filteredSubmissions.map(sub => (
                                         <tr key={sub.id} className="hover:bg-white/5 transition-colors group">
@@ -177,6 +180,12 @@ const FormSubmissionsList = () => {
                                                 </div>
                                             </td>
                                             <td className="p-4">{getStatusBadge(sub.status)}</td>
+                                            <td className="p-4">
+                                                {sub.email_status === 'sent' && <span className="text-green-400 text-xs flex items-center gap-1"><CheckCircle size={12} /> Gönderildi</span>}
+                                                {sub.email_status === 'failed' && <span className="text-red-400 text-xs flex items-center gap-1" title={sub.email_error}><XCircle size={12} /> Hata</span>}
+                                                {(sub.email_status === 'skipped' || sub.email_status?.startsWith('skipped')) && <span className="text-gray-500 text-xs">Atlandı</span>}
+                                                {sub.email_status === 'pending' && <span className="text-yellow-500 text-xs">Bekliyor</span>}
+                                            </td>
                                             <td className="p-4 text-right">
                                                 <Button
                                                     variant="ghost"
