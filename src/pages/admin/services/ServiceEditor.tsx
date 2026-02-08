@@ -4,25 +4,40 @@ import { supabase } from '../../../lib/supabase';
 import { Button } from '../../../components/ui/Button';
 import { Input } from '../../../components/ui/Input';
 import { Textarea } from '../../../components/ui/Textarea';
-import { ArrowLeft, Save, Loader2, Globe, Plus, Trash2, GripVertical, Image as ImageIcon } from 'lucide-react';
+import { ArrowLeft, Save, Loader2, Globe, Plus, Trash2, GripVertical, Image as ImageIcon, ExternalLink } from 'lucide-react';
 import { FadeIn } from '../../../components/animations/FadeIn';
 import { ImageUpload } from '../../../components/ui/ImageUpload';
+import type { CTATemplate, CTAOverride, ProcessStep, FAQItem, Benefit } from '../../../types/service';
 
-// Types for JSON columns
-interface ProcessStep {
-    title: string;
-    desc: string;
-}
 
-interface FAQItem {
-    question: string;
-    answer: string;
-}
 
-interface Benefit {
-    title: string;
-    desc: string;
-}
+// CTA Templates - matches frontend
+const CTA_TEMPLATES: CTATemplate[] = [
+    {
+        key: 'get-offer',
+        defaultLabel: 'Teklif Al',
+        defaultHref: '/#ucretsiz-analiz',
+        defaultVariant: 'accent',
+        defaultTarget: 'same_tab',
+        order: 0
+    },
+    {
+        key: 'contact',
+        defaultLabel: 'Bize Ulaşın',
+        defaultHref: '/iletisim',
+        defaultVariant: 'outline',
+        defaultTarget: 'same_tab',
+        order: 1
+    },
+    {
+        key: 'book-call',
+        defaultLabel: '15 Dakikalık Ücretsiz Görüşme',
+        defaultHref: '/#ucretsiz-analiz',
+        defaultVariant: 'secondary',
+        defaultTarget: 'same_tab',
+        order: 2
+    }
+];
 
 const ServiceEditor = () => {
     const { id } = useParams();
@@ -52,6 +67,7 @@ const ServiceEditor = () => {
     const [process, setProcess] = useState<ProcessStep[]>([]);
     const [faq, setFaq] = useState<FAQItem[]>([]);
     const [benefits, setBenefits] = useState<Benefit[]>([]);
+    const [ctaOverrides, setCtaOverrides] = useState<Record<string, CTAOverride>>({});
 
     useEffect(() => {
         if (isEditing) fetchService();
@@ -81,6 +97,7 @@ const ServiceEditor = () => {
             setProcess(Array.isArray(data.process) ? data.process : []);
             setFaq(Array.isArray(data.faq) ? data.faq : []);
             setBenefits(Array.isArray(data.benefits) ? data.benefits : []);
+            setCtaOverrides(typeof data.cta_overrides === 'object' && data.cta_overrides !== null ? data.cta_overrides : {});
         }
         setLoading(false);
     };
@@ -152,6 +169,41 @@ const ServiceEditor = () => {
         }
     };
 
+    // --- CTA Override Management ---
+
+    const updateOverride = (key: string, field: keyof CTAOverride, value: any) => {
+        setCtaOverrides(prev => ({
+            ...prev,
+            [key]: {
+                ...prev[key],
+                [field]: value
+            }
+        }));
+    };
+
+    const resetOverride = (key: string, field: keyof CTAOverride) => {
+        setCtaOverrides(prev => {
+            const updated = { ...prev };
+            if (updated[key]) {
+                const { [field]: _, ...rest } = updated[key];
+                if (Object.keys(rest).length === 0) {
+                    delete updated[key];
+                } else {
+                    updated[key] = rest as CTAOverride;
+                }
+            }
+            return updated;
+        });
+    };
+
+    const testCtaLink = (href: string) => {
+        if (!href) {
+            alert('Link boş!');
+            return;
+        }
+        window.open(href, '_blank', 'noopener,noreferrer');
+    };
+
     // --- Submit ---
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -163,7 +215,7 @@ const ServiceEditor = () => {
             process,
             faq,
             benefits,
-            // features can be added similarly if needed later
+            cta_overrides: ctaOverrides,
         };
 
         let error;
@@ -191,7 +243,7 @@ const ServiceEditor = () => {
         <FadeIn>
             <form onSubmit={handleSubmit} className="max-w-5xl mx-auto space-y-8 pb-20">
                 {/* Header */}
-                <div className="flex items-center justify-between sticky top-20 bg-primary/95 backdrop-blur z-20 py-4 border-b border-white/5">
+                <div className="flex items-center justify-between sticky top-20 bg-background/95 backdrop-blur z-20 py-4 border-b border-white/5">
                     <div className="flex items-center gap-4">
                         <Button
                             type="button"
@@ -357,7 +409,7 @@ const ServiceEditor = () => {
                         <div className="bg-secondary/30 p-6 rounded-2xl border border-white/5 space-y-4">
                             <div className="flex items-center justify-between mb-2">
                                 <h2 className="text-sm font-semibold text-white">Öne Çıkanlar (Benefits)</h2>
-                                <Button type="button" variant="ghost" size="sm" onClick={() => addItem(setBenefits, { title: '', desc: '' })}>
+                                <Button type="button" variant="ghost" size="sm" onClick={() => addItem(setBenefits, { title: '', desc: '' } as Benefit)}>
                                     <Plus size={14} />
                                 </Button>
                             </div>
@@ -375,6 +427,140 @@ const ServiceEditor = () => {
                                         </Button>
                                     </div>
                                 ))}
+                            </div>
+                        </div>
+
+                        {/* CTA Buttons - Template Based */}
+                        <div className="bg-secondary/30 p-6 rounded-2xl border border-white/5 space-y-4">
+                            <div>
+                                <h2 className="text-lg font-semibold text-white mb-2">CTA Butonları</h2>
+                                <p className="text-sm text-text-muted">
+                                    Bu butonlar sayfada kodlanmıştır. Sadece metin ve link değerlerini özelleştirebilirsiniz.
+                                </p>
+                            </div>
+
+                            <div className="space-y-3">
+                                {CTA_TEMPLATES.map((template) => {
+                                    const override = ctaOverrides[template.key] || {};
+                                    const currentLabel = override.label ?? template.defaultLabel;
+                                    const currentHref = override.href ?? template.defaultHref;
+                                    const isEnabled = override.isEnabled ?? true;
+                                    const hasOverride = Boolean(override.label || override.href || override.isEnabled === false);
+
+                                    return (
+                                        <div key={template.key} className="border border-white/10 rounded-lg p-4 bg-secondary/20 space-y-3">
+                                            <div className="flex items-center justify-between mb-3">
+                                                <div className="flex items-center gap-2">
+                                                    <span className="text-sm font-semibold text-white capitalize">{template.key.replace('-', ' ')}</span>
+                                                    <span className="text-xs px-2 py-0.5 rounded bg-white/5 text-text-muted">{template.defaultVariant}</span>
+                                                    {hasOverride && (
+                                                        <span className="text-xs px-2 py-0.5 rounded bg-accent-blue/20 text-accent-blue">Özelleştirilmiş</span>
+                                                    )}
+                                                </div>
+                                                <div className="flex items-center gap-2">
+                                                    <input
+                                                        type="checkbox"
+                                                        id={`enabled-${template.key}`}
+                                                        checked={isEnabled}
+                                                        onChange={e => updateOverride(template.key, 'isEnabled', e.target.checked)}
+                                                        className="w-4 h-4 rounded bg-secondary border-white/10"
+                                                    />
+                                                    <label htmlFor={`enabled-${template.key}`} className="text-sm text-white">
+                                                        Aktif
+                                                    </label>
+                                                </div>
+                                            </div>
+
+                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                                {/* Label */}
+                                                <div className="space-y-1">
+                                                    <label className="text-xs text-text-muted">Buton Metni</label>
+                                                    <Input
+                                                        value={currentLabel}
+                                                        onChange={e => updateOverride(template.key, 'label', e.target.value)}
+                                                        placeholder={template.defaultLabel}
+                                                        className={override.label ? 'border-accent-blue/50' : ''}
+                                                    />
+                                                    {override.label && (
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => resetOverride(template.key, 'label')}
+                                                            className="text-xs text-accent-blue hover:underline"
+                                                        >
+                                                            Varsayılana dön: "{template.defaultLabel}"
+                                                        </button>
+                                                    )}
+                                                </div>
+
+                                                {/* Href */}
+                                                <div className="space-y-1">
+                                                    <label className="text-xs text-text-muted">Link</label>
+                                                    <div className="flex gap-2">
+                                                        <Input
+                                                            value={currentHref}
+                                                            onChange={e => updateOverride(template.key, 'href', e.target.value)}
+                                                            placeholder={template.defaultHref}
+                                                            className={`flex-1 ${override.href ? 'border-accent-blue/50' : ''}`}
+                                                        />
+                                                        {currentHref && (
+                                                            <Button
+                                                                type="button"
+                                                                variant="ghost"
+                                                                size="sm"
+                                                                onClick={() => testCtaLink(currentHref)}
+                                                                title="Linki Test Et"
+                                                            >
+                                                                <ExternalLink size={14} />
+                                                            </Button>
+                                                        )}
+                                                    </div>
+                                                    {override.href && (
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => resetOverride(template.key, 'href')}
+                                                            className="text-xs text-accent-blue hover:underline"
+                                                        >
+                                                            Varsayılana dön: "{template.defaultHref}"
+                                                        </button>
+                                                    )}
+                                                </div>
+
+                                                {/* Variant Override */}
+                                                <div className="space-y-1 md:col-span-2">
+                                                    <label className="text-xs text-text-muted">Buton Stili (Variant)</label>
+                                                    <div className="flex items-center gap-2">
+                                                        <select
+                                                            value={override.variant || template.defaultVariant}
+                                                            onChange={e => updateOverride(template.key, 'variant', e.target.value)}
+                                                            className={`h-10 rounded-lg border border-white/10 bg-secondary px-3 text-sm text-white focus:outline-none focus:ring-2 focus:ring-accent-blue w-full ${override.variant ? 'border-accent-blue/50' : ''}`}
+                                                        >
+                                                            <option value="accent">Accent (Mavi)</option>
+                                                            <option value="outline">Outline (Çizgili/Glass)</option>
+                                                            <option value="secondary">Secondary (Gri)</option>
+                                                            <option value="ghost">Ghost (Şeffaf)</option>
+                                                            <option value="primary">Primary (Siyah/Beyaz)</option>
+                                                        </select>
+                                                        {override.variant && (
+                                                            <button
+                                                                type="button"
+                                                                onClick={() => resetOverride(template.key, 'variant')}
+                                                                className="text-xs text-accent-blue hover:underline whitespace-nowrap"
+                                                            >
+                                                                Sıfırla
+                                                            </button>
+                                                        )}
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            {/* Info: Target is fixed */}
+                                            <div className="text-xs text-text-muted pt-2 border-t border-white/5">
+                                                Sekme: <span className="font-mono">{template.defaultTarget === 'same_tab' ? 'Aynı' : 'Yeni'}</span> •
+                                                Sıra: {template.order + 1}
+                                            </div>
+                                        </div>
+                                    );
+                                })}
                             </div>
                         </div>
 

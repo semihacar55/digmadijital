@@ -44,6 +44,10 @@ interface SiteSettings {
         notificationEmail: string;
         honeypotEnabled: boolean;
     };
+    cta: {
+        defaultPrimaryHref: string;
+        defaultSecondaryHref: string;
+    };
 }
 
 const defaultSettings: SiteSettings = {
@@ -68,14 +72,15 @@ const defaultSettings: SiteSettings = {
         organizationSchema: { name: 'Digma Dijital', logoUrl: '', sameAs: [] }
     },
     integrations: { googleAnalytics: '', metaPixel: '', searchConsole: '' },
-    forms: { notificationEmail: 'info@digma.com.tr', honeypotEnabled: true }
+    forms: { notificationEmail: 'info@digma.com.tr', honeypotEnabled: true },
+    cta: { defaultPrimaryHref: '/#ucretsiz-analiz', defaultSecondaryHref: '/iletisim' }
 };
 
 const Settings = () => {
     const [settings, setSettings] = useState<SiteSettings>(defaultSettings);
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
-    const [activeTab, setActiveTab] = useState<'general' | 'seo' | 'integrations' | 'forms'>('general');
+    const [activeTab, setActiveTab] = useState<'general' | 'seo' | 'integrations' | 'forms' | 'cta'>('general');
 
     useEffect(() => {
         fetchSettings();
@@ -121,7 +126,8 @@ const Settings = () => {
         { id: 'general' as const, label: 'Genel' },
         { id: 'seo' as const, label: 'SEO' },
         { id: 'integrations' as const, label: 'Entegrasyonlar' },
-        { id: 'forms' as const, label: 'Form Ayarları' }
+        { id: 'forms' as const, label: 'Form Ayarları' },
+        { id: 'cta' as const, label: 'CTA Varsayılanları' }
     ];
 
     if (loading) {
@@ -153,8 +159,8 @@ const Settings = () => {
                         key={tab.id}
                         onClick={() => setActiveTab(tab.id)}
                         className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${activeTab === tab.id
-                                ? 'bg-accent-blue text-white'
-                                : 'text-text-muted hover:bg-white/5 hover:text-white'
+                            ? 'bg-accent-blue text-white'
+                            : 'text-text-muted hover:bg-white/5 hover:text-white'
                             }`}
                     >
                         {tab.label}
@@ -292,7 +298,7 @@ const Settings = () => {
                                 <select
                                     value={settings.seo.robotsIndex ? 'index' : 'noindex'}
                                     onChange={e => setSettings({ ...settings, seo: { ...settings.seo, robotsIndex: e.target.value === 'index' } })}
-                                    className="w-full bg-primary border border-white/10 rounded-lg p-2.5 text-white"
+                                    className="w-full bg-background border border-white/10 rounded-lg p-2.5 text-white"
                                 >
                                     <option value="index">Index (Aranabilir)</option>
                                     <option value="noindex">No Index</option>
@@ -351,9 +357,39 @@ const Settings = () => {
                                 id="honeypot"
                                 checked={settings.forms.honeypotEnabled}
                                 onChange={e => setSettings({ ...settings, forms: { ...settings.forms, honeypotEnabled: e.target.checked } })}
-                                className="w-5 h-5 rounded bg-primary border-white/10"
+                                className="w-5 h-5 rounded bg-background border-white/10"
                             />
                             <label htmlFor="honeypot" className="text-sm text-white">Honeypot spam koruması aktif</label>
+                        </div>
+                    </div>
+                )}
+
+                {activeTab === 'cta' && (
+                    <div className="space-y-6 max-w-3xl">
+                        <div className="bg-accent-blue/10 border border-accent-blue/20 rounded-lg p-4 mb-6">
+                            <p className="text-sm text-white">
+                                Bu ayarlar, hizmet sayfalarında CTA linkleri boş bırakıldığında kullanılacak varsayılan linklerdir.
+                            </p>
+                        </div>
+
+                        <div className="space-y-2">
+                            <label className="text-sm font-medium text-text-muted">Primary CTA Varsayılan Link</label>
+                            <Input
+                                value={settings.cta.defaultPrimaryHref}
+                                onChange={e => setSettings({ ...settings, cta: { ...settings.cta, defaultPrimaryHref: e.target.value } })}
+                                placeholder="/#ucretsiz-analiz"
+                            />
+                            <p className="text-xs text-text-muted">Örnek: /#ucretsiz-analiz, /iletisim, https://...</p>
+                        </div>
+
+                        <div className="space-y-2">
+                            <label className="text-sm font-medium text-text-muted">Secondary CTA Varsayılan Link</label>
+                            <Input
+                                value={settings.cta.defaultSecondaryHref}
+                                onChange={e => setSettings({ ...settings, cta: { ...settings.cta, defaultSecondaryHref: e.target.value } })}
+                                placeholder="/iletisim"
+                            />
+                            <p className="text-xs text-text-muted">Örnek: /iletisim, /#contact, https://...</p>
                         </div>
                     </div>
                 )}

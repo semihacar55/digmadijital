@@ -126,7 +126,7 @@ const FooterManager = () => {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {columns.map((column, colIndex) => (
-                        <div key={colIndex} className="bg-primary border border-white/10 rounded-lg p-4 space-y-3">
+                        <div key={colIndex} className="bg-background border border-white/10 rounded-lg p-4 space-y-3">
                             <div className="flex items-center gap-2">
                                 <input
                                     type="text"
@@ -199,7 +199,7 @@ const FooterManager = () => {
                             <select
                                 value={social.platform}
                                 onChange={(e) => updateSocial(index, 'platform', e.target.value)}
-                                className="bg-primary border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-accent-blue"
+                                className="bg-background border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-accent-blue"
                             >
                                 <option value="instagram">Instagram</option>
                                 <option value="linkedin">LinkedIn</option>
@@ -212,7 +212,7 @@ const FooterManager = () => {
                                 value={social.url}
                                 onChange={(e) => updateSocial(index, 'url', e.target.value)}
                                 placeholder="https://..."
-                                className="flex-1 bg-primary border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-accent-blue"
+                                className="flex-1 bg-background border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-accent-blue"
                             />
                             <button
                                 onClick={() => removeSocial(index)}
@@ -236,7 +236,7 @@ const FooterManager = () => {
                             type="text"
                             value={contact.address || ''}
                             onChange={(e) => setContact({ ...contact, address: e.target.value })}
-                            className="w-full bg-primary border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-accent-blue"
+                            className="w-full bg-background border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-accent-blue"
                         />
                     </div>
                     <div className="grid grid-cols-2 gap-4">
@@ -246,7 +246,7 @@ const FooterManager = () => {
                                 type="text"
                                 value={contact.phone || ''}
                                 onChange={(e) => setContact({ ...contact, phone: e.target.value })}
-                                className="w-full bg-primary border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-accent-blue"
+                                className="w-full bg-background border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-accent-blue"
                             />
                         </div>
                         <div>
@@ -255,7 +255,7 @@ const FooterManager = () => {
                                 type="email"
                                 value={contact.email || ''}
                                 onChange={(e) => setContact({ ...contact, email: e.target.value })}
-                                className="w-full bg-primary border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-accent-blue"
+                                className="w-full bg-background border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-accent-blue"
                             />
                         </div>
                     </div>
@@ -273,7 +273,7 @@ const FooterManager = () => {
                         value={copyright}
                         onChange={(e) => setCopyright(e.target.value)}
                         placeholder="© 2024 Digma Dijital. Tüm hakları saklıdır."
-                        className="w-full bg-primary border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-accent-blue"
+                        className="w-full bg-background border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-accent-blue"
                     />
                 </div>
 

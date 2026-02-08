@@ -32,7 +32,7 @@ const Login = () => {
     };
 
     return (
-        <div className="min-h-screen bg-primary flex items-center justify-center p-4 relative overflow-hidden">
+        <div className="min-h-screen bg-background flex items-center justify-center p-4 relative overflow-hidden">
             {/* Background Effects */}
             <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-accent-blue/10 rounded-full blur-[120px] translate-x-1/3 -translate-y-1/3 pointer-events-none" />
             <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-accent-green/10 rounded-full blur-[100px] -translate-x-1/3 translate-y-1/3 pointer-events-none" />
@@ -60,7 +60,7 @@ const Login = () => {
                                         type="email"
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}
-                                        className="w-full bg-primary/50 border border-white/10 rounded-lg pl-10 pr-4 py-2.5 text-white focus:border-accent-blue focus:outline-none transition-colors"
+                                        className="w-full bg-background/50 border border-white/10 rounded-lg pl-10 pr-4 py-2.5 text-white focus:border-accent-blue focus:outline-none transition-colors"
                                         placeholder="admin@digma.com"
                                         required
                                     />
@@ -75,7 +75,7 @@ const Login = () => {
                                         type="password"
                                         value={password}
                                         onChange={(e) => setPassword(e.target.value)}
-                                        className="w-full bg-primary/50 border border-white/10 rounded-lg pl-10 pr-4 py-2.5 text-white focus:border-accent-blue focus:outline-none transition-colors"
+                                        className="w-full bg-background/50 border border-white/10 rounded-lg pl-10 pr-4 py-2.5 text-white focus:border-accent-blue focus:outline-none transition-colors"
                                         placeholder="••••••••"
                                         required
                                     />

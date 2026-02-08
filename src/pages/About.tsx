@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { Helmet } from 'react-helmet-async';
 import { Section } from '../components/ui/Section';
+import SEO from '../components/seo/SEO';
 import { PageHero } from '../components/ui/PageHero';
 import { FadeIn } from '../components/animations/FadeIn';
 import { getPageByKey, getDefaultPageContent } from '../services/pages.service';
@@ -47,10 +47,11 @@ const About = () => {
 
     return (
         <>
-            <Helmet>
-                <title>{seoTitle}</title>
-                {seoDescription && <meta name="description" content={seoDescription} />}
-            </Helmet>
+
+            <SEO
+                title={seoTitle}
+                description={seoDescription}
+            />
 
             <PageHero
                 title={heroTitle}

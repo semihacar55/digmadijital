@@ -82,7 +82,7 @@ const AboutPageManager = () => {
                         value={heroTitle}
                         onChange={(e) => setHeroTitle(e.target.value)}
                         placeholder="Hakkımızda"
-                        className="w-full bg-primary border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-accent-blue"
+                        className="w-full bg-background border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-accent-blue"
                     />
                 </div>
 
@@ -93,7 +93,7 @@ const AboutPageManager = () => {
                         value={heroSubtitle}
                         onChange={(e) => setHeroSubtitle(e.target.value)}
                         placeholder="Dijital dünyada markanızı büyütüyoruz"
-                        className="w-full bg-primary border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-accent-blue"
+                        className="w-full bg-background border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-accent-blue"
                     />
                 </div>
             </div>

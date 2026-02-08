@@ -9,6 +9,7 @@ interface ImageUploadProps {
     bucket?: string;
     className?: string;
     label?: string;
+    id?: string;
 }
 
 export const ImageUpload = ({
@@ -16,7 +17,8 @@ export const ImageUpload = ({
     onChange,
     bucket = 'media',
     className = '',
-    label = 'Görsel Yükle'
+    label = 'Görsel Yükle',
+    id
 }: ImageUploadProps) => {
     const [uploading, setUploading] = useState(false);
 
@@ -89,6 +91,7 @@ export const ImageUpload = ({
                             <p className="text-xs text-text-muted mt-1">PNG, JPG, GIF up to 2MB</p>
                         </div>
                         <input
+                            id={id}
                             type="file"
                             className="hidden"
                             accept="image/*"

@@ -5,7 +5,7 @@ import { Menu, X, ArrowRight, ChevronDown } from 'lucide-react';
 import { Button } from '../ui/Button';
 import { cn } from '../ui/Button'; // Assuming cn utility is here, or import from utils
 import { supabase } from '../../lib/supabase';
-import { getLayoutSettings, getDefaultLayoutSettings, type HeaderMenuItem } from '../../services/layout.service';
+
 
 interface Service {
     id: string;
@@ -19,12 +19,6 @@ const Header = () => {
     const [scrolled, setScrolled] = useState(false);
     const [services, setServices] = useState<Service[]>([]);
     const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
-    const [logoUrl, setLogoUrl] = useState<string | null>(null);
-    const [logoAlt, setLogoAlt] = useState('Digma Logo');
-    const [headerMenu, setHeaderMenu] = useState<HeaderMenuItem[]>([]);
-    const [ctaLabel, setCtaLabel] = useState('Ücretsiz Analiz Al');
-    const [ctaHref, setCtaHref] = useState('/#ucretsiz-analiz');
-    const [ctaEnabled, setCtaEnabled] = useState(true);
     const location = useLocation();
     const navigate = useNavigate();
 
@@ -33,26 +27,6 @@ const Header = () => {
             setScrolled(window.scrollY > 50);
         };
         window.addEventListener('scroll', handleScroll);
-
-        // Fetch layout settings
-        const fetchLayoutSettings = async () => {
-            const settings = await getLayoutSettings();
-            if (settings) {
-                setLogoUrl(settings.header_logo_url);
-                setLogoAlt(settings.header_logo_alt);
-                setHeaderMenu(settings.header_menu || []);
-                setCtaLabel(settings.header_cta_label);
-                setCtaHref(settings.header_cta_href);
-                setCtaEnabled(settings.header_cta_enabled);
-            } else {
-                // Use defaults
-                const defaults = getDefaultLayoutSettings();
-                setHeaderMenu(defaults.header_menu || []);
-                setCtaLabel(defaults.header_cta_label || 'Ücretsiz Analiz Al');
-                setCtaHref(defaults.header_cta_href || '/#ucretsiz-analiz');
-            }
-        };
-        fetchLayoutSettings();
 
         // Fetch services for dropdown
         const fetchServices = async () => {
@@ -92,7 +66,7 @@ const Header = () => {
         <header
             className={cn(
                 "fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b",
-                scrolled ? "bg-primary/80 backdrop-blur-md border-white/5 py-4" : "bg-transparent border-transparent py-6"
+                scrolled ? "bg-background/80 backdrop-blur-md border-white/5 py-4" : "bg-transparent border-transparent py-6"
             )}
         >
             <div className="container mx-auto px-4 md:px-6 flex items-center justify-between">
@@ -167,7 +141,7 @@ const Header = () => {
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: "auto" }}
                         exit={{ opacity: 0, height: 0 }}
-                        className="md:hidden bg-primary border-b border-white/10 overflow-hidden"
+                        className="md:hidden bg-background border-b border-white/10 overflow-hidden"
                     >
                         <nav className="flex flex-col p-6 gap-4">
                             {/* Mobile Services Accordion */}

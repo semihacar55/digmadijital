@@ -5,8 +5,8 @@ import { supabase } from '../lib/supabase';
 import { FadeIn } from '../components/animations/FadeIn';
 import { PremiumBackground } from '../components/ui/PremiumBackground';
 import { PageHero } from '../components/ui/PageHero';
-import { Helmet } from 'react-helmet-async';
 import { ArticleCard } from '../components/ui/blog-post-card';
+import SEO from '../components/seo/SEO';
 
 interface Post {
     id: string;
@@ -47,10 +47,11 @@ const Blog = () => {
 
     return (
         <PremiumBackground>
-            <Helmet>
-                <title>Blog | Digma Digital Agency</title>
-                <meta name="description" content="Dijital pazarlama, web tasarım ve teknoloji dünyasından güncel haberler ve ipuçları." />
-            </Helmet>
+
+            <SEO
+                title="Blog | Digma Digital Agency"
+                description="Dijital pazarlama, web tasarım ve teknoloji dünyasından güncel haberler ve ipuçları."
+            />
 
             <PageHero
                 title="Blog & İçgörüler"

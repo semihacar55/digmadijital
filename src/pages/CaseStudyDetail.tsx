@@ -4,6 +4,7 @@ import { supabase } from '../lib/supabase';
 import { PremiumBackground } from '../components/ui/PremiumBackground';
 import { FadeIn } from '../components/animations/FadeIn';
 import { Helmet } from 'react-helmet-async';
+import SEO from '../components/seo/SEO';
 import Markdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { ArrowLeft } from 'lucide-react';
@@ -73,13 +74,28 @@ const CaseStudyDetail = () => {
         );
     }
 
+
     return (
         <PremiumBackground>
-            <Helmet>
-                <title>{study.seo_title || study.title} | Digma</title>
-                <meta name="description" content={study.seo_desc || study.excerpt} />
-                {!study.is_indexable && <meta name="robots" content="noindex, nofollow" />}
-            </Helmet>
+            <SEO
+                title={`${study.seo_title || study.title} | Digma`}
+                description={study.seo_desc || study.excerpt}
+                ogType="article"
+                ogImage={study.cover_image}
+                schema={{
+                    "@context": "https://schema.org",
+                    "@type": "Article",
+                    "headline": study.seo_title || study.title,
+                    "image": study.cover_image,
+                    "datePublished": study.published_at,
+                    "author": "Digma Digital Agency"
+                }}
+            />
+            {!study.is_indexable && (
+                <Helmet>
+                    <meta name="robots" content="noindex, nofollow" />
+                </Helmet>
+            )}
 
             <article className="pt-32 pb-20 px-4">
                 <div className="container mx-auto max-w-6xl">

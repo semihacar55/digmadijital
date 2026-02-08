@@ -507,7 +507,7 @@ const CaseStudyEditor = () => {
                             <div className="space-y-2">
                                 <label className="text-sm font-medium text-text-muted">Durum</label>
                                 <select
-                                    className="w-full bg-primary border border-white/10 rounded-lg p-2.5 text-white"
+                                    className="w-full bg-background border border-white/10 rounded-lg p-2.5 text-white"
                                     value={formData.status}
                                     onChange={e => setFormData({ ...formData, status: e.target.value as 'draft' | 'published' })}
                                 >

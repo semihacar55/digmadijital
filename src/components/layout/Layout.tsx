@@ -7,7 +7,7 @@ import ScrollToHashElement from './ScrollToHashElement';
 
 const Layout = () => {
     return (
-        <div className="min-h-screen bg-primary flex flex-col font-sans text-text-main selection:bg-accent-blue/30 selection:text-white">
+        <div className="min-h-screen bg-background flex flex-col font-sans text-foreground selection:bg-primary/30 selection:text-white">
             <ScrollToHashElement />
             <Header />
             <main className="flex-grow pt-24">

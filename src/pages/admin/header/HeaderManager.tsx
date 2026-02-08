@@ -104,7 +104,7 @@ const HeaderManager = () => {
                         value={logoUrl}
                         onChange={(e) => setLogoUrl(e.target.value)}
                         placeholder="https://example.com/logo.png"
-                        className="w-full bg-primary border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-accent-blue"
+                        className="w-full bg-background border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-accent-blue"
                     />
                 </div>
 
@@ -114,7 +114,7 @@ const HeaderManager = () => {
                         type="text"
                         value={logoAlt}
                         onChange={(e) => setLogoAlt(e.target.value)}
-                        className="w-full bg-primary border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-accent-blue"
+                        className="w-full bg-background border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-accent-blue"
                     />
                 </div>
 
@@ -125,7 +125,7 @@ const HeaderManager = () => {
                         value={faviconUrl}
                         onChange={(e) => setFaviconUrl(e.target.value)}
                         placeholder="https://example.com/favicon.ico"
-                        className="w-full bg-primary border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-accent-blue"
+                        className="w-full bg-background border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-accent-blue"
                     />
                 </div>
             </div>
@@ -145,7 +145,7 @@ const HeaderManager = () => {
 
                 <div className="space-y-4">
                     {menuItems.map((item, index) => (
-                        <div key={index} className="bg-primary border border-white/10 rounded-lg p-4 space-y-3">
+                        <div key={index} className="bg-background border border-white/10 rounded-lg p-4 space-y-3">
                             <div className="flex items-center gap-4">
                                 <GripVertical size={18} className="text-text-muted cursor-move" />
                                 <input
@@ -194,7 +194,7 @@ const HeaderManager = () => {
                             type="text"
                             value={ctaLabel}
                             onChange={(e) => setCtaLabel(e.target.value)}
-                            className="w-full bg-primary border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-accent-blue"
+                            className="w-full bg-background border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-accent-blue"
                         />
                     </div>
                     <div>
@@ -203,7 +203,7 @@ const HeaderManager = () => {
                             type="text"
                             value={ctaHref}
                             onChange={(e) => setCtaHref(e.target.value)}
-                            className="w-full bg-primary border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-accent-blue"
+                            className="w-full bg-background border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-accent-blue"
                         />
                     </div>
                 </div>

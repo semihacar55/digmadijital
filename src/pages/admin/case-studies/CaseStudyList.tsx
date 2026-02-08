@@ -81,7 +81,7 @@ const CaseStudyList = () => {
                         />
                     </div>
                     <select
-                        className="bg-primary/50 border border-white/10 rounded-lg px-4 py-2 text-sm text-text-muted focus:outline-none focus:border-accent-blue"
+                        className="bg-background/50 border border-white/10 rounded-lg px-4 py-2 text-sm text-text-muted focus:outline-none focus:border-accent-blue"
                         value={statusFilter}
                         onChange={(e) => setStatusFilter(e.target.value)}
                     >

@@ -21,7 +21,7 @@ const AuthGuard = () => {
     }, []);
 
     if (session === null) {
-        return <div className="min-h-screen bg-primary flex items-center justify-center text-white">Yükleniyor...</div>;
+        return <div className="min-h-screen bg-background flex items-center justify-center text-white">Yükleniyor...</div>;
     }
 
     if (!session) {

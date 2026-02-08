@@ -4,7 +4,7 @@ import { supabase } from '../lib/supabase';
 import { PremiumBackground } from '../components/ui/PremiumBackground';
 import { PageHero } from '../components/ui/PageHero';
 import { FadeIn } from '../components/animations/FadeIn';
-import { Helmet } from 'react-helmet-async';
+import SEO from '../components/seo/SEO';
 import { ArrowRight, Briefcase } from 'lucide-react';
 
 interface CaseStudy {
@@ -50,12 +50,13 @@ const CaseStudies = () => {
         ? studies
         : studies.filter(s => s.sector === activeFilter);
 
+
     return (
         <PremiumBackground>
-            <Helmet>
-                <title>Vaka Çalışmaları | Digma Digital Agency</title>
-                <meta name="description" content="Markalar için yarattığımız başarı hikayeleri ve dijital dönüşüm projeleri." />
-            </Helmet>
+            <SEO
+                title="Vaka Çalışmaları | Digma Digital Agency"
+                description="Markalar için yarattığımız başarı hikayeleri ve dijital dönüşüm projeleri."
+            />
 
             <PageHero
                 title="Başarı Hikayeleri"

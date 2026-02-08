@@ -5,38 +5,40 @@ import { Section } from '../components/ui/Section';
 import { Button } from '../components/ui/Button';
 import { ArrowRight, CheckCircle2, MessageSquare, Plus, Minus } from 'lucide-react';
 import { FadeIn } from '../components/animations/FadeIn';
-import { Helmet } from 'react-helmet-async';
-import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
+import SEO from '../components/seo/SEO';
+import { ServiceDetailContent } from '../components/content/ServiceDetailContent';
+import type { Service, CTATemplate } from '../types/service';
+import { HeroSection } from '../components/ui/HeroSection';
 
-interface ProcessStep {
-    title: string;
-    desc: string;
-}
 
-interface FAQItem {
-    question: string;
-    answer: string;
-}
 
-interface Benefit {
-    title: string;
-    desc?: string;
-}
-
-interface Service {
-    id: string;
-    title: string;
-    summary: string;
-    content: string;
-    icon: string;
-    seo_title: string;
-    seo_desc: string;
-    image_url?: string;
-    process: ProcessStep[];
-    faq: FAQItem[];
-    benefits: Benefit[];
-}
+// CTA Templates - defined in code
+const CTA_TEMPLATES: CTATemplate[] = [
+    {
+        key: 'get-offer',
+        defaultLabel: 'Teklif Al',
+        defaultHref: '/#ucretsiz-analiz',
+        defaultVariant: 'accent',
+        defaultTarget: 'same_tab',
+        order: 0
+    },
+    {
+        key: 'contact',
+        defaultLabel: 'Bize Ulaşın',
+        defaultHref: '/iletisim',
+        defaultVariant: 'outline',
+        defaultTarget: 'same_tab',
+        order: 1
+    },
+    {
+        key: 'book-call',
+        defaultLabel: '15 Dakikalık Ücretsiz Görüşme',
+        defaultHref: '/#ucretsiz-analiz',
+        defaultVariant: 'secondary',
+        defaultTarget: 'same_tab',
+        order: 2
+    }
+];
 
 const ServiceDetail = () => {
     const { slug } = useParams();
@@ -45,21 +47,80 @@ const ServiceDetail = () => {
     const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
 
     useEffect(() => {
-        const fetchService = async () => {
+        const fetchData = async () => {
             setLoading(true);
-            const { data, error } = await supabase
+
+            // Fetch service
+            const { data: serviceData, error: serviceError } = await supabase
                 .from('services')
                 .select('*')
                 .eq('slug', slug)
                 .single();
 
-            if (data) setService(data);
-            if (error) console.error('Error fetching service:', error);
+            if (serviceError) {
+                console.error('Error fetching service:', serviceError);
+            } else if (serviceData) {
+                setService(serviceData);
+            }
+
             setLoading(false);
         };
-
-        if (slug) fetchService();
+        if (slug) fetchData();
     }, [slug]);
+
+    // Helper: Merge templates with database overrides
+    const getMergedCTAs = () => {
+        return CTA_TEMPLATES.map(template => {
+            const override = service?.cta_overrides?.[template.key] || {};
+
+            return {
+                key: template.key,
+                label: override.label ?? template.defaultLabel,
+                href: override.href ?? template.defaultHref,
+                variant: override.variant ?? template.defaultVariant,
+                target: override.target ?? template.defaultTarget,
+                isEnabled: override.isEnabled ?? true,
+                order: template.order
+            };
+        })
+            .filter(btn => btn.isEnabled && btn.label && btn.href)
+            .sort((a, b) => a.order - b.order);
+    };
+
+
+    // CTA Rendering Helper
+    const renderCTA = (
+        label: string,
+        href: string,
+        target: 'same_tab' | 'new_tab',
+        variant: 'accent' | 'outline' | 'secondary' | 'ghost' = 'accent',
+        className: string = 'rounded-full px-7 h-12 text-base'
+    ) => {
+
+        if (!href || !label) return null; // Hide if empty
+
+        const isExternal = href.startsWith('http://') || href.startsWith('https://');
+        const targetAttr = target === 'new_tab' ? '_blank' : undefined;
+        const rel = isExternal && target === 'new_tab' ? 'noopener noreferrer' : undefined;
+
+        const button = (
+            <Button variant={variant} size="lg" className={className}>
+                {label}
+                {variant === 'accent' && <ArrowRight className="ml-2 w-5 h-5" />}
+                {variant === 'outline' && label.includes('Ulaş') && <MessageSquare size={20} className="mr-2" />}
+            </Button>
+        );
+
+        if (isExternal) {
+            return (
+                <a href={href} target={targetAttr} rel={rel}>
+                    {button}
+                </a>
+            );
+        }
+
+        return <Link to={href}>{button}</Link>;
+    };
 
     if (loading) return (
         <Section className="min-h-screen flex items-center justify-center">
@@ -105,78 +166,49 @@ const ServiceDetail = () => {
         }))
     } : null;
 
+    const graphSchema = {
+        "@context": "https://schema.org",
+        "@graph": [
+            jsonLd,
+            ...(faqJsonLd ? [faqJsonLd] : [])
+        ]
+    };
+
     return (
         <>
-            <Helmet>
-                <title>{service.seo_title || service.title} | Digma Dijital</title>
-                <meta name="description" content={service.seo_desc || service.summary} />
-                <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
-                {faqJsonLd && <script type="application/ld+json">{JSON.stringify(faqJsonLd)}</script>}
-            </Helmet>
+            <SEO
+                title={`${service.seo_title || service.title} | Digma Dijital`}
+                description={service.seo_desc || service.summary}
+                schema={graphSchema}
+            />
 
-            <div className="min-h-screen relative overflow-hidden">
-                {/* GLOBAL BACKGROUND - Moved here for seamless continuity */}
-                <div className="absolute inset-0 pointer-events-none z-0">
-                    {/* Primary Glow */}
-                    <div
-                        className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-accent-blue/20 rounded-full blur-[100px] opacity-20 sm:opacity-30 animate-pulse"
-                        style={{ animationDuration: '8s' }}
-                    />
-                    {/* Secondary Glow */}
-                    <div
-                        className="absolute bottom-[0%] right-[-5%] w-[400px] h-[400px] bg-purple-500/10 rounded-full blur-[80px] opacity-20 sm:opacity-30"
-                    />
-                    {/* Noise Overlay */}
-                    <div className="absolute inset-0 opacity-[0.03] mix-blend-overlay bg-[url('/noise.svg')] bg-repeat" />
-                </div>
+            {/* Page Wrapper - Default Theme */}
+            <div className="min-h-screen relative overflow-hidden bg-background text-foreground">
 
-                {/* HERO SECTION */}
-                {/* Padding logic: pt-24 (mobile header clearance) + pt-6 (visual gap) = ~30px visually */}
-                {/* Desktop: pt-32 (header) + pt-14 (visual gap) = ~56px visually */}
-                <Section className="relative z-10 pt-24 pb-10 lg:pt-32 lg:pb-20">
-                    <div className="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 bg-accent-blue/10 rounded-full blur-3xl pointer-events-none hidden lg:block" />
-                    <div className="container mx-auto px-4 relative z-10">
-                        <FadeIn>
-                            <div className="max-w-4xl text-left">
-                                <h1 className="text-4xl md:text-7xl font-display font-bold text-white mb-6 leading-tight">
-                                    {service.title}
-                                </h1>
-                                <p className="text-xl md:text-2xl text-text-muted mb-10 leading-relaxed max-w-3xl">
-                                    {service.summary}
-                                </p>
-                                <div className="flex flex-col sm:flex-row gap-4">
-                                    <Button
-                                        variant="accent"
-                                        size="lg"
-                                        className="w-full sm:w-auto h-14 sm:h-auto text-lg px-8"
-                                        onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
-                                    >
-                                        Teklif Al
-                                        <ArrowRight className="ml-2 w-5 h-5" />
-                                    </Button>
-                                    <Button
-                                        variant="outline"
-                                        size="lg"
-                                        className="w-full sm:w-auto h-14 sm:h-auto text-lg px-8 gap-2"
-                                    >
-                                        <MessageSquare size={20} />
-                                        Bize Ulaşın
-                                    </Button>
-                                </div>
-                            </div>
-                        </FadeIn>
-                    </div>
-                </Section>
+                {/* HERO SECTION - Aceternity Landing Style */}
+                <HeroSection
+                    title={service.title}
+                    subtitle={service.summary}
+                    ctas={getMergedCTAs().map(btn => ({
+                        label: btn.label,
+                        href: btn.href,
+                        variant: btn.variant,
+                        target: btn.target === 'new_tab' ? '_blank' : undefined,
+                        rel: btn.target === 'new_tab' ? 'noopener noreferrer' : undefined
+                    }))}
+                    imageSrc={service.image_url}
+                    className="mb-0"
+                />
 
-                {/* BENEFITS STRIP */}
+                {/* BENEFITS STRIP - Glass Theme */}
                 {service.benefits && service.benefits.length > 0 && (
-                    <div className="border-y border-white/5 bg-white/5 backdrop-blur-sm">
+                    <div className="border-y border-white/10 bg-white/5 backdrop-blur-md">
                         <div className="container mx-auto px-4">
-                            <div className="grid grid-cols-2 lg:grid-cols-4 divide-x divide-white/5">
+                            <div className="grid grid-cols-2 lg:grid-cols-4 divide-x divide-white/10">
                                 {service.benefits.map((benefit, index) => (
                                     <div key={index} className="p-6 flex items-center gap-3 justify-center text-center lg:text-left lg:justify-start">
                                         <CheckCircle2 className="text-accent-blue shrink-0 w-5 h-5" />
-                                        <span className="font-medium text-white">{benefit.title}</span>
+                                        <span className="font-medium text-white/90">{benefit.title}</span>
                                     </div>
                                 ))}
                             </div>
@@ -186,44 +218,33 @@ const ServiceDetail = () => {
 
                 {/* MAIN CONTENT & CONTENT BODY */}
                 {(service.content || (service.process && service.process.length > 0)) && (
-                    <Section className="py-20">
+                    <Section className="py-24">
                         <div className="container mx-auto px-4">
                             {/* CONTENT BODY */}
                             {service.content && (
                                 <FadeIn>
-                                    <div className="max-w-4xl mx-auto mb-20">
-                                        <article className="prose prose-invert prose-lg max-w-none prose-img:rounded-xl prose-img:border prose-img:border-white/10 prose-headings:font-display">
-                                            <ReactMarkdown
-                                                remarkPlugins={[remarkGfm]}
-                                                components={{
-                                                    img: ({ node, ...props }) => (
-                                                        <img {...props} className="w-full h-auto rounded-xl border border-white/10 shadow-lg" loading="lazy" />
-                                                    )
-                                                }}
-                                            >
-                                                {service.content}
-                                            </ReactMarkdown>
-                                        </article>
-                                    </div>
+                                    <ServiceDetailContent>
+                                        {service.content}
+                                    </ServiceDetailContent>
                                 </FadeIn>
                             )}
 
                             {/* PROCESS SECTION */}
                             {service.process && service.process.length > 0 && (
                                 <FadeIn>
-                                    <div className="max-w-6xl mx-auto">
+                                    <div className="max-w-6xl mx-auto mt-32">
                                         <div className="text-center mb-16">
-                                            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Uygulama Sürecimiz</h2>
-                                            <p className="text-text-muted">Projenizi başarıya taşırken izlediğimiz adımlar.</p>
+                                            <h2 className="text-3xl md:text-4xl font-display font-bold text-white mb-4">Uygulama Sürecimiz</h2>
+                                            <p className="text-white/60 text-lg">Projenizi başarıya taşırken izlediğimiz adımlar.</p>
                                         </div>
                                         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                                             {service.process.map((step, index) => (
-                                                <div key={index} className="bg-secondary/30 border border-white/5 p-8 rounded-2xl relative group hover:border-accent-blue/30 transition-colors">
-                                                    <div className="text-4xl font-bold text-white/5 absolute top-4 right-6 group-hover:text-accent-blue/10 transition-colors">
+                                                <div key={index} className="bg-white/5 border border-white/10 backdrop-blur-sm p-8 rounded-2xl relative group hover:border-accent-blue/50 hover:bg-white/10 transition-all duration-300">
+                                                    <div className="text-4xl font-bold text-accent-blue/20 absolute top-4 right-6 group-hover:text-accent-blue/40 transition-colors">
                                                         {index + 1}
                                                     </div>
                                                     <h3 className="text-xl font-bold text-white mb-4 relative z-10">{step.title}</h3>
-                                                    <p className="text-text-muted leading-relaxed relative z-10">{step.desc}</p>
+                                                    <p className="text-white/60 leading-relaxed relative z-10">{step.desc}</p>
                                                 </div>
                                             ))}
                                         </div>
@@ -234,30 +255,30 @@ const ServiceDetail = () => {
                     </Section>
                 )}
 
-                {/* FAQ SECTION */}
+                {/* FAQ SECTION - Glass Theme */}
                 {service.faq && service.faq.length > 0 && (
-                    <Section className="py-20 bg-black/20">
+                    <Section className="py-24 border-t border-white/5">
                         <div className="container mx-auto px-4 max-w-3xl">
-                            <div className="text-center mb-12">
-                                <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Sıkça Sorulan Sorular</h2>
+                            <div className="text-center mb-16">
+                                <h2 className="text-3xl md:text-4xl font-display font-bold text-white mb-4">Sıkça Sorulan Sorular</h2>
                             </div>
                             <div className="space-y-4">
                                 {service.faq.map((item, index) => (
                                     <FadeIn key={index} delay={index * 0.1}>
-                                        <div className="border border-white/5 rounded-xl bg-secondary/20 overflow-hidden">
+                                        <div className="border border-white/10 rounded-xl bg-white/5 backdrop-blur-sm overflow-hidden transition-all hover:border-white/20">
                                             <button
                                                 onClick={() => toggleFaq(index)}
-                                                className="w-full flex items-center justify-between p-6 text-left hover:bg-white/5 transition-colors"
+                                                className="w-full flex items-center justify-between p-6 text-left transition-colors"
                                             >
-                                                <span className="font-medium text-white text-lg">{item.question}</span>
+                                                <span className="font-medium text-white text-lg pr-8">{item.question}</span>
                                                 {openFaqIndex === index ? (
-                                                    <Minus className="text-accent-blue" />
+                                                    <Minus className="text-accent-blue shrink-0" />
                                                 ) : (
-                                                    <Plus className="text-text-muted" />
+                                                    <Plus className="text-white/50 shrink-0 group-hover:text-white" />
                                                 )}
                                             </button>
                                             {openFaqIndex === index && (
-                                                <div className="p-6 pt-0 text-text-muted leading-relaxed border-t border-white/5 bg-black/20">
+                                                <div className="p-6 pt-0 text-white/70 leading-relaxed border-t border-white/10 bg-white/5">
                                                     {item.answer}
                                                 </div>
                                             )}
@@ -269,28 +290,33 @@ const ServiceDetail = () => {
                     </Section>
                 )}
 
-                {/* FINAL CTA */}
+                {/* FINAL CTA - Dark Premium */}
                 <Section className="py-24">
                     <div className="container mx-auto px-4">
-                        <div className="max-w-4xl mx-auto text-center bg-gradient-to-b from-secondary to-primary border border-white/10 p-8 sm:p-12 rounded-3xl relative overflow-hidden">
+                        <div className="max-w-5xl mx-auto text-center bg-gradient-to-br from-accent-blue/10 via-white/5 to-transparent border border-white/10 p-12 md:p-20 rounded-3xl relative overflow-hidden backdrop-blur-md shadow-2xl">
+                            {/* Decorative Glow */}
+                            <div className="absolute top-0 right-0 w-96 h-96 bg-accent-blue/20 rounded-full blur-[128px] pointer-events-none -translate-y-1/2 translate-x-1/2" />
+                            <div className="absolute bottom-0 left-0 w-64 h-64 bg-accent-blue/10 rounded-full blur-[96px] pointer-events-none translate-y-1/2 -translate-x-1/2" />
+
                             <div className="relative z-10">
-                                <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">
+                                <h2 className="text-4xl md:text-6xl font-display font-bold text-white mb-8 tracking-tight">
                                     Markanızı Büyütmeye Hazır mısınız?
                                 </h2>
-                                <p className="text-xl text-text-muted mb-8 max-w-2xl mx-auto">
+                                <p className="text-xl text-white/70 mb-12 max-w-2xl mx-auto leading-relaxed">
                                     Profesyonel ekibimizle tanışın ve projeniz için en doğru stratejiyi birlikte belirleyelim.
                                 </p>
-                                <Button
-                                    variant="accent"
-                                    size="lg"
-                                    className="w-full sm:w-auto min-h-[56px] h-auto whitespace-normal py-3 px-8 text-lg"
-                                    onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
-                                >
-                                    15 Dakikalık Ücretsiz Görüşme
-                                </Button>
+                                {getMergedCTAs().slice(0, 1).map((btn, idx) => (
+                                    <span key={btn.key || idx}>
+                                        {renderCTA(
+                                            btn.label,
+                                            btn.href,
+                                            btn.target,
+                                            btn.variant,
+                                            'w-full sm:w-auto min-h-[60px] h-auto whitespace-normal py-4 px-10 text-lg font-semibold shadow-lg hover:shadow-accent-blue/25 hover:scale-105 transition-all duration-300'
+                                        )}
+                                    </span>
+                                ))}
                             </div>
-                            {/* Background Elements */}
-                            <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_top,_var(--tw-gradient-stops))] from-accent-blue/10 via-transparent to-transparent pointer-events-none" />
                         </div>
                     </div>
                 </Section>

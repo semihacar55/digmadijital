@@ -8,6 +8,8 @@ import { Helmet } from 'react-helmet-async';
 import Markdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { Calendar, ArrowLeft } from 'lucide-react';
+import SEO from '../components/seo/SEO';
+import { generateArticleSchema } from '../utils/seo-helpers';
 
 interface Post {
     id: string;
@@ -55,40 +57,29 @@ const BlogPost = () => {
     if (loading) return <div className="min-h-screen pt-32 text-center text-white">Yükleniyor...</div>;
     if (!post) return <div className="min-h-screen pt-32 text-center text-white">Yazı bulunamadı.</div>;
 
-    // Structured Data (JSON-LD)
-    const structuredData = {
-        "@context": "https://schema.org",
-        "@type": "BlogPosting",
-        "headline": post.seo_title || post.title,
-        "image": post.cover_image,
-        "datePublished": post.published_at,
-        "dateModified": post.updated_at,
-        "author": [{
-            "@type": "Person",
-            "name": "Digma Digital Agency", // Defaulting to agency if no author profile
-        }]
-    };
-
     return (
         <PremiumBackground>
-            <Helmet>
-                <title>{post.seo_title || post.title} | Digma</title>
-                <meta name="description" content={post.seo_desc || post.summary} />
-                <link rel="canonical" href={post.canonical_url || window.location.href} />
-                {/* Robots */}
-                {!post.is_indexable && <meta name="robots" content="noindex, nofollow" />}
+            <SEO
+                title={`${post.seo_title || post.title} | Digma`}
+                description={post.seo_desc || post.summary}
+                canonical={post.canonical_url || window.location.href}
+                ogType="article"
+                ogImage={post.cover_image}
+                schema={generateArticleSchema({
+                    title: post.seo_title || post.title,
+                    summary: post.seo_desc || post.summary,
+                    cover_image: post.cover_image,
+                    published_at: post.published_at,
+                    slug: post.slug,
+                    author: "Digma Digital Agency"
+                })}
+            />
 
-                {/* OG Tags */}
-                <meta property="og:title" content={post.seo_title || post.title} />
-                <meta property="og:description" content={post.seo_desc || post.summary} />
-                <meta property="og:image" content={post.cover_image} />
-                <meta property="og:type" content="article" />
-
-                {/* Schema */}
-                <script type="application/ld+json">
-                    {JSON.stringify(structuredData)}
-                </script>
-            </Helmet>
+            {!post.is_indexable && (
+                <Helmet>
+                    <meta name="robots" content="noindex, nofollow" />
+                </Helmet>
+            )}
 
             <article className="pt-32 pb-20 px-4">
                 <div className="container mx-auto">

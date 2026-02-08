@@ -101,7 +101,7 @@ const ContactPageManager = () => {
                             value={heroTitle}
                             onChange={(e) => setHeroTitle(e.target.value)}
                             placeholder="İletişim"
-                            className="w-full bg-primary border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-accent-blue"
+                            className="w-full bg-background border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-accent-blue"
                         />
                     </div>
                     <div>
@@ -111,7 +111,7 @@ const ContactPageManager = () => {
                             value={heroSubtitle}
                             onChange={(e) => setHeroSubtitle(e.target.value)}
                             placeholder="Bizimle iletişime geçin"
-                            className="w-full bg-primary border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-accent-blue"
+                            className="w-full bg-background border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-accent-blue"
                         />
                     </div>
                 </div>
@@ -129,7 +129,7 @@ const ContactPageManager = () => {
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             placeholder="merhaba@digma.com"
-                            className="w-full bg-primary border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-accent-blue"
+                            className="w-full bg-background border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-accent-blue"
                         />
                     </div>
                     <div>
@@ -139,7 +139,7 @@ const ContactPageManager = () => {
                             value={phone}
                             onChange={(e) => setPhone(e.target.value)}
                             placeholder="+90 (212) 555 00 00"
-                            className="w-full bg-primary border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-accent-blue"
+                            className="w-full bg-background border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-accent-blue"
                         />
                     </div>
                 </div>
@@ -151,7 +151,7 @@ const ContactPageManager = () => {
                         value={address}
                         onChange={(e) => setAddress(e.target.value)}
                         placeholder="Maslak Mah. Büyükdere Cad. No:123, Sarıyer / İstanbul"
-                        className="w-full bg-primary border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-accent-blue"
+                        className="w-full bg-background border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-accent-blue"
                     />
                 </div>
 
@@ -162,7 +162,7 @@ const ContactPageManager = () => {
                         value={mapUrl}
                         onChange={(e) => setMapUrl(e.target.value)}
                         placeholder="https://maps.google.com/..."
-                        className="w-full bg-primary border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-accent-blue"
+                        className="w-full bg-background border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-accent-blue"
                     />
                 </div>
             </div>
@@ -180,7 +180,7 @@ const ContactPageManager = () => {
                         value={formToEmail}
                         onChange={(e) => setFormToEmail(e.target.value)}
                         placeholder="merhaba@digma.com"
-                        className="w-full bg-primary border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-accent-blue"
+                        className="w-full bg-background border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-accent-blue"
                     />
                     <p className="text-xs text-text-muted mt-2">
                         İletişim formundan gelen mailler bu adrese gönderilecek
@@ -209,7 +209,7 @@ const ContactPageManager = () => {
                         value={seoTitle}
                         onChange={(e) => setSeoTitle(e.target.value)}
                         placeholder="İletişim | Digma Dijital"
-                        className="w-full bg-primary border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-accent-blue"
+                        className="w-full bg-background border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-accent-blue"
                     />
                 </div>
 
@@ -220,7 +220,7 @@ const ContactPageManager = () => {
                         onChange={(e) => setSeoDescription(e.target.value)}
                         rows={3}
                         placeholder="Digma Dijital ile iletişime geçin"
-                        className="w-full bg-primary border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-accent-blue"
+                        className="w-full bg-background border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-accent-blue"
                     />
                 </div>
 
@@ -233,7 +233,7 @@ const ContactPageManager = () => {
                         value={seoKeywords}
                         onChange={(e) => setSeoKeywords(e.target.value)}
                         placeholder="iletişim, dijital ajans, teklif al"
-                        className="w-full bg-primary border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-accent-blue"
+                        className="w-full bg-background border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-accent-blue"
                     />
                 </div>
 
@@ -244,7 +244,7 @@ const ContactPageManager = () => {
                         value={ogImage}
                         onChange={(e) => setOgImage(e.target.value)}
                         placeholder="https://example.com/og-image.jpg"
-                        className="w-full bg-primary border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-accent-blue"
+                        className="w-full bg-background border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-accent-blue"
                     />
                 </div>
             </div>

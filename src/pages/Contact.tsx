@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { Helmet } from 'react-helmet-async';
 import { Section } from '../components/ui/Section';
+import SEO from '../components/seo/SEO';
 import { Button } from '../components/ui/Button';
 import { Input } from '../components/ui/Input';
 import { Textarea } from '../components/ui/Textarea';
@@ -90,10 +90,11 @@ const Contact = () => {
 
     return (
         <>
-            <Helmet>
-                <title>{seoTitle}</title>
-                {seoDescription && <meta name="description" content={seoDescription} />}
-            </Helmet>
+
+            <SEO
+                title={seoTitle}
+                description={seoDescription}
+            />
 
             <PageHero
                 title={heroTitle}

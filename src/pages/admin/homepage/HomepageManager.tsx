@@ -10,11 +10,12 @@ interface HomepageSection {
     section_key: string;
     title: string;
     description: string | null;
+    highlight: string | null;
     cta_label: string | null;
     cta_href: string | null;
     is_enabled: boolean;
     order_index: number;
-    settings: Record<string, unknown>;
+    settings: Record<string, any>;
 }
 
 const HomepageManager = () => {
@@ -52,6 +53,7 @@ const HomepageManager = () => {
                 .update({
                     title: editingSection.title,
                     description: editingSection.description,
+                    highlight: editingSection.highlight,
                     cta_label: editingSection.cta_label,
                     cta_href: editingSection.cta_href,
                     updated_at: new Date().toISOString()
@@ -191,7 +193,14 @@ const HomepageManager = () => {
                                         </button>
                                     </div>
                                 </div>
-                                <p className="text-sm text-text-muted line-clamp-1">{section.title}</p>
+                                <div className="flex justify-between items-center text-sm text-text-muted">
+                                    <span className="line-clamp-1">{section.title}</span>
+                                    {section.highlight && (
+                                        <span className="text-accent-blue text-xs bg-accent-blue/10 px-2 py-0.5 rounded ml-2 whitespace-nowrap">
+                                            {section.highlight}
+                                        </span>
+                                    )}
+                                </div>
                             </div>
                         ))}
                     </div>
@@ -217,6 +226,20 @@ const HomepageManager = () => {
                                     <Input
                                         value={editingSection.title}
                                         onChange={e => setEditingSection({ ...editingSection, title: e.target.value })}
+                                    />
+                                </div>
+
+                                <div className="space-y-2">
+                                    <label className="text-sm font-medium text-text-muted">
+                                        Vurgulu Metin (Highlight)
+                                        <span className="ml-2 text-xs text-text-muted/60 font-normal">
+                                            (Varsa başlığın yanında renkli görünür)
+                                        </span>
+                                    </label>
+                                    <Input
+                                        value={editingSection.highlight || ''}
+                                        onChange={e => setEditingSection({ ...editingSection, highlight: e.target.value })}
+                                        placeholder="Örn: Ölçülebilir Büyütelim"
                                     />
                                 </div>
 

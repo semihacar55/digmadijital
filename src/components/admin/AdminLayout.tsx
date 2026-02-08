@@ -18,9 +18,7 @@ import {
     CheckCircle,
     ChevronDown,
     Layout,
-    Mail,
-    Share2,
-    Shield
+    Mail
 } from 'lucide-react';
 
 interface MenuItem {
@@ -67,6 +65,7 @@ const AdminLayout = () => {
                 defaultOpen: true,
                 items: [
                     { icon: LayoutDashboard, label: 'Anasayfa', path: '/admin/homepage' },
+                    { icon: FileText, label: 'Nasıl Çalışırız?', path: '/admin/sections/how-it-works' },
                     { icon: Briefcase, label: 'Hizmetler', path: '/admin/services' },
                     { icon: Briefcase, label: 'Vaka Çalışmaları', path: '/admin/case-studies' },
                     { icon: FileText, label: 'Blog', path: '/admin/blog' },
@@ -74,7 +73,6 @@ const AdminLayout = () => {
                     { icon: Mail, label: 'İletişim', path: '/admin/pages/contact' },
                     { icon: CheckCircle, label: 'Neden Digma', path: '/admin/homepage/why-digma' },
                     { icon: MessageSquare, label: 'Referanslar', path: '/admin/referanslar' },
-                    { icon: ImageIcon, label: 'Referans Logoları', path: '/admin/homepage/logos' },
                     { icon: Users, label: 'Ekip', path: '/admin/team' },
                     { icon: ImageIcon, label: 'Medya', path: '/admin/media' },
                     { icon: MessageSquare, label: 'Formlar', path: '/admin/forms' },
@@ -175,7 +173,7 @@ const AdminLayout = () => {
     };
 
     return (
-        <div className="min-h-screen bg-secondary flex">
+        <div className="dark min-h-screen bg-background flex">
             {/* Sidebar - Mobile Overlay */}
             {sidebarOpen && (
                 <div
@@ -186,7 +184,7 @@ const AdminLayout = () => {
 
             {/* Sidebar */}
             <aside className={`
-        fixed lg:static inset-y-0 left-0 z-50 w-64 bg-primary border-r border-white/5 
+        fixed lg:static inset-y-0 left-0 z-50 w-64 bg-background border-r border-white/5 
         transform transition-transform duration-300 ease-in-out
         ${sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
       `}>
@@ -245,7 +243,7 @@ const AdminLayout = () => {
             {/* Main Content */}
             <div className="flex-1 flex flex-col min-w-0">
                 {/* Topbar */}
-                <header className="h-16 bg-primary/50 backdrop-blur-md border-b border-white/5 flex items-center justify-between px-4 lg:px-8 sticky top-0 z-30">
+                <header className="h-16 bg-background/50 backdrop-blur-md border-b border-white/5 flex items-center justify-between px-4 lg:px-8 sticky top-0 z-30">
                     <div className="flex items-center gap-4">
                         <button
                             className="lg:hidden text-text-muted hover:text-white"
@@ -258,14 +256,14 @@ const AdminLayout = () => {
                             <input
                                 type="text"
                                 placeholder="Ara..."
-                                className="bg-secondary border border-white/10 rounded-full pl-10 pr-4 py-1.5 text-sm text-white focus:outline-none focus:border-accent-blue w-64 transition-colors"
+                                className="bg-card border border-white/10 rounded-full pl-10 pr-4 py-1.5 text-sm text-white focus:outline-none focus:border-accent-blue w-64 transition-colors"
                             />
                         </div>
                     </div>
                     <div className="flex items-center gap-4">
                         <button className="relative text-text-muted hover:text-white transition-colors">
                             <Bell size={20} />
-                            <span className="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full border-2 border-primary"></span>
+                            <span className="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full border-2 border-background"></span>
                         </button>
                     </div>
                 </header>

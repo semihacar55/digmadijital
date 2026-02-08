@@ -4,13 +4,35 @@ import { cn } from './Button';
 interface SectionProps extends React.HTMLAttributes<HTMLElement> {
     container?: boolean;
     id?: string;
+    padding?: 'tight' | 'default' | 'spacious' | 'none';
+    overflowHidden?: boolean;
 }
 
-const Section = ({ className, children, container = true, id, ...props }: SectionProps) => {
+const Section = ({
+    className,
+    children,
+    container = true,
+    id,
+    padding = 'default',
+    overflowHidden = false,
+    ...props
+}: SectionProps) => {
+    const paddingClasses = {
+        tight: "py-10 md:py-14",
+        default: "py-14 md:py-20",
+        spacious: "py-16 md:py-24",
+        none: ""
+    };
+
     return (
         <section
             id={id}
-            className={cn("py-20 md:py-32 relative overflow-hidden", className)}
+            className={cn(
+                "relative",
+                paddingClasses[padding],
+                overflowHidden && "overflow-hidden",
+                className
+            )}
             {...props}
         >
             {container ? (

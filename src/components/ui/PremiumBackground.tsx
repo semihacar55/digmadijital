@@ -8,7 +8,7 @@ interface PremiumBackgroundProps {
 
 export const PremiumBackground = ({ children, className = '' }: PremiumBackgroundProps) => {
     return (
-        <div className={`relative min-h-screen w-full overflow-hidden bg-primary ${className} pb-20 md:pb-0`}>
+        <div className={`relative min-h-screen w-full overflow-hidden bg-background ${className} pb-20 md:pb-0`}>
             {/* 1. Base Gradient (Deep, rich dark foundation) */}
             <div className="absolute inset-0 bg-gradient-to-b from-zinc-950 via-black to-zinc-950 z-0" />
 

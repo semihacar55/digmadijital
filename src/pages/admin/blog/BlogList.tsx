@@ -123,7 +123,7 @@ const BlogList = () => {
                                         <tr key={post.id} className="border-b border-white/5 last:border-0 hover:bg-white/5 transition-colors">
                                             <td className="p-4">
                                                 <div className="flex items-center gap-3">
-                                                    <div className="w-10 h-10 rounded-lg bg-primary/50 flex items-center justify-center border border-white/10 text-accent-blue">
+                                                    <div className="w-10 h-10 rounded-lg bg-background/50 flex items-center justify-center border border-white/10 text-accent-blue">
                                                         <FileText size={20} />
                                                     </div>
                                                     <div>

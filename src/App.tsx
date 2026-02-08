@@ -28,11 +28,13 @@ import FormSubmissionsList from './pages/admin/forms/FormSubmissionsList';
 import Settings from './pages/admin/settings/Settings';
 import HomepageManager from './pages/admin/homepage/HomepageManager';
 import WhyDigmaEditor from './pages/admin/homepage/WhyDigmaEditor';
-import LogosManager from './pages/admin/homepage/LogosManager';
+
 import HeaderManager from './pages/admin/header/HeaderManager';
 import FooterManager from './pages/admin/footer/FooterManager';
 import AboutPageManager from './pages/admin/pages/AboutPageManager';
 import ContactPageManager from './pages/admin/pages/ContactPageManager';
+import HowItWorksManager from './pages/admin/sections/HowItWorksManager';
+import SetupServices from './pages/admin/SetupServices';
 
 const router = createBrowserRouter([
   {
@@ -75,7 +77,12 @@ const router = createBrowserRouter([
         path: "iletisim",
         element: <Contact />,
       },
+
     ],
+  },
+  {
+    path: "/setup",
+    element: <SetupServices />,
   },
   // Admin Routes
   {
@@ -172,9 +179,10 @@ const router = createBrowserRouter([
             element: <WhyDigmaEditor />,
           },
           {
-            path: "homepage/logos",
-            element: <LogosManager />,
+            path: "sections/how-it-works",
+            element: <HowItWorksManager />,
           },
+
           {
             path: "header",
             element: <HeaderManager />,
@@ -187,9 +195,14 @@ const router = createBrowserRouter([
             path: "pages/about",
             element: <AboutPageManager />,
           },
+
           {
             path: "pages/contact",
             element: <ContactPageManager />,
+          },
+          {
+            path: "setup",
+            element: <SetupServices />,
           },
         ],
 

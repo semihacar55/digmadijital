@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { type ReactNode } from 'react';
 import { FadeIn } from '../animations/FadeIn';
 
 interface BreadcrumbItem {
@@ -19,7 +19,6 @@ export const PageHero = ({
     title,
     subtitle,
     breadcrumb,
-    variant = 'slim',
     children,
     className = ''
 }: PageHeroProps) => {
@@ -37,7 +36,7 @@ export const PageHero = ({
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-accent-blue/10 blur-3xl rounded-full pointer-events-none" />
 
             {/* Content */}
-            <div className="relative z-10 pt-14 md:pt-16 lg:pt-18 pb-10 md:pb-12 px-4">
+            <div className="relative z-10 pt-24 md:pt-32 pb-10 md:pb-12 px-4">
                 <div className="container mx-auto">
                     <FadeIn>
                         <div className="text-center max-w-3xl mx-auto">
@@ -62,10 +61,8 @@ export const PageHero = ({
                             )}
 
                             {/* Title */}
-                            <h1 className="text-3xl md:text-5xl font-extrabold tracking-tight mb-4">
-                                <span className="bg-gradient-to-r from-white via-white to-accent-blue bg-clip-text text-transparent">
-                                    {title}
-                                </span>
+                            <h1 className="text-3xl md:text-5xl font-extrabold tracking-tight mb-4 text-white">
+                                {title}
                             </h1>
 
                             {/* Subtitle */}
