@@ -18,7 +18,8 @@ import {
     CheckCircle,
     ChevronDown,
     Layout,
-    Mail
+    Mail,
+    Building
 } from 'lucide-react';
 
 interface MenuItem {
@@ -88,6 +89,7 @@ const AdminLayout = () => {
             }
         ],
         standaloneBottom: [
+            { icon: Building, label: 'Şirket Bilgileri', path: '/admin/company-info' },
             { icon: Settings, label: 'Ayarlar', path: '/admin/settings' }
         ]
     };

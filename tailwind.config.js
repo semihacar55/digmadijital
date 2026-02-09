@@ -4,7 +4,7 @@ export default {
         "./index.html",
         "./src/**/*.{js,ts,jsx,tsx}",
     ],
-    darkMode: 'class',
+    darkMode: 'class', // Important: Depends on 'dark' class
     theme: {
         extend: {
             colors: {
@@ -13,40 +13,49 @@ export default {
                 ring: "hsl(var(--ring))",
                 background: "hsl(var(--background))",
                 foreground: "hsl(var(--foreground))",
+
+                // Primary Brand Colors
                 primary: {
                     DEFAULT: "hsl(var(--primary))",
                     foreground: "hsl(var(--primary-foreground))",
                 },
-                secondary: {
-                    DEFAULT: "hsl(var(--secondary))",
-                    foreground: "hsl(var(--secondary-foreground))",
-                },
-                destructive: {
-                    DEFAULT: "hsl(var(--destructive))",
-                    foreground: "hsl(var(--destructive-foreground))",
-                },
-                muted: {
-                    DEFAULT: "hsl(var(--muted))",
-                    foreground: "hsl(var(--muted-foreground))",
-                },
-                accent: {
-                    DEFAULT: "hsl(var(--accent))",
-                    foreground: "hsl(var(--accent-foreground))",
-                    blue: "#3B82F6", // Keep for legacy
-                    green: "#10B981", // Keep for legacy
+
+                // Surfaces / Cards
+                card: {
+                    DEFAULT: "hsl(var(--card))",
+                    foreground: "hsl(var(--card-foreground))",
                 },
                 popover: {
                     DEFAULT: "hsl(var(--popover))",
                     foreground: "hsl(var(--popover-foreground))",
                 },
-                card: {
-                    DEFAULT: "hsl(var(--card))",
-                    foreground: "hsl(var(--card-foreground))",
+
+                // Secondary / Muted actions
+                secondary: {
+                    DEFAULT: "hsl(var(--secondary))",
+                    foreground: "hsl(var(--secondary-foreground))",
+                },
+                muted: {
+                    DEFAULT: "hsl(var(--muted-bg))", // Using custom muted-bg
+                    foreground: "hsl(var(--muted-foreground))",
+                },
+                accent: {
+                    DEFAULT: "hsl(var(--accent))",
+                    foreground: "hsl(var(--accent-foreground))",
+                    blue: "#3B82F6", // Legacy support
+                    green: "#10B981", // Legacy support
+                },
+                destructive: {
+                    DEFAULT: "hsl(var(--destructive))",
+                    foreground: "hsl(var(--destructive-foreground))",
                 },
 
-                // Legacy mappings pointing to Semantic Vars
-                "text-main": "hsl(var(--foreground))",
-                "text-muted": "hsl(var(--muted-foreground))",
+                // Custom User Token Mappings
+                "bg": "hsl(var(--bg))",
+                "surface": "hsl(var(--surface))",
+                "surface-2": "hsl(var(--surface-2))",
+                "text": "hsl(var(--text))",
+                // "text-muted": "hsl(var(--muted))", // Already exists as utility, but can ensure mapping
             },
             fontFamily: {
                 sans: ['Inter', 'sans-serif'],

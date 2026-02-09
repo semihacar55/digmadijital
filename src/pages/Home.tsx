@@ -27,6 +27,8 @@ interface CaseStudy {
     excerpt: string;
     cover_image: string;
     sector: string;
+    services?: string[];
+    results?: { value: string; unit: string; label: string }[];
 }
 
 interface BlogPost {
@@ -116,7 +118,7 @@ const Home = () => {
         try {
             const { data, error } = await supabase
                 .from('case_studies')
-                .select('id, title, slug, excerpt, cover_image, sector')
+                .select('id, title, slug, excerpt, cover_image, sector, services, results')
                 .eq('status', 'published')
                 .eq('is_featured', true)
                 .order('featured_order', { ascending: true })
@@ -249,7 +251,7 @@ const Home = () => {
                             </h2>
                             <p className="text-text-muted text-lg">{section.description}</p>
                         </div>
-                        <ServicesGrid />
+                        <ServicesGrid limit={6} />
                     </Section>
                 );
             case 'why_digma':
@@ -318,16 +320,75 @@ const Home = () => {
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                                 {featuredCaseStudies.map((study) => (
                                     <Link key={study.id} to={`/vaka-calismalari/${study.slug}`}>
-                                        <div className="group cursor-pointer">
-                                            <div className="aspect-[4/3] bg-white/5 rounded-2xl mb-4 overflow-hidden relative">
-                                                {study.cover_image ? (
-                                                    <img src={study.cover_image} alt={study.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
-                                                ) : (
-                                                    <div className="absolute inset-0 bg-accent-blue/10 group-hover:bg-accent-blue/20 transition-colors" />
-                                                )}
+                                        <div className="group cursor-pointer h-full">
+                                            <div className="bg-secondary/30 backdrop-blur-sm border border-white/10 rounded-2xl overflow-hidden h-full flex flex-col hover:border-accent-blue/50 transition-all duration-300">
+                                                {/* Cover Image with Overlay */}
+                                                <div className="aspect-[16/10] relative overflow-hidden">
+                                                    {study.cover_image ? (
+                                                        <img
+                                                            src={study.cover_image}
+                                                            alt={study.title}
+                                                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                                        />
+                                                    ) : (
+                                                        <div className="absolute inset-0 bg-gradient-to-br from-accent-blue/20 to-accent-green/10" />
+                                                    )}
+                                                    {/* Gradient Overlay */}
+                                                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+
+                                                    {/* Sector Badge */}
+                                                    <div className="absolute top-4 left-4">
+                                                        <span className="px-3 py-1 bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-xs font-medium text-white">
+                                                            {study.sector}
+                                                        </span>
+                                                    </div>
+                                                </div>
+
+                                                {/* Content */}
+                                                <div className="p-6 flex flex-col flex-1">
+                                                    <h3 className="text-xl font-bold mb-3 group-hover:text-accent-blue transition-colors line-clamp-2">
+                                                        {study.title}
+                                                    </h3>
+
+                                                    {study.excerpt && (
+                                                        <p className="text-text-muted text-sm mb-4 line-clamp-3 flex-1">
+                                                            {study.excerpt}
+                                                        </p>
+                                                    )}
+
+                                                    {/* Service Tags */}
+                                                    {study.services && study.services.length > 0 && (
+                                                        <div className="flex flex-wrap gap-2 mb-4">
+                                                            {study.services.slice(0, 3).map((service: string, idx: number) => (
+                                                                <span
+                                                                    key={idx}
+                                                                    className="px-2 py-1 bg-primary/50 border border-white/10 rounded text-xs text-text-muted"
+                                                                >
+                                                                    {service}
+                                                                </span>
+                                                            ))}
+                                                            {study.services.length > 3 && (
+                                                                <span className="px-2 py-1 text-xs text-text-muted">
+                                                                    +{study.services.length - 3}
+                                                                </span>
+                                                            )}
+                                                        </div>
+                                                    )}
+
+                                                    {/* Explore Button */}
+                                                    <div className="flex items-center text-accent-blue text-sm font-medium group-hover:gap-2 transition-all">
+                                                        <span>İncele</span>
+                                                        <svg
+                                                            className="w-4 h-4 group-hover:translate-x-1 transition-transform"
+                                                            fill="none"
+                                                            viewBox="0 0 24 24"
+                                                            stroke="currentColor"
+                                                        >
+                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                                                        </svg>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <h3 className="text-xl font-bold mb-2 group-hover:text-accent-blue transition-colors">{study.title}</h3>
-                                            <p className="text-text-muted text-sm">{study.sector}</p>
                                         </div>
                                     </Link>
                                 ))}

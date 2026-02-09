@@ -28,19 +28,19 @@ export function HeroSection({
 }: HeroSectionProps) {
     return (
         <section className={cn(
-            "relative w-full overflow-hidden bg-background text-foreground rounded-3xl min-h-[520px] md:min-h-[560px] lg:min-h-[520px] flex items-center",
+            "relative w-full overflow-hidden bg-background text-foreground rounded-3xl min-h-[520px] md:min-h-[560px] lg:min-h-[520px] flex items-center transition-colors duration-300",
             className
         )}>
             {/* --- BACKGROUNDS & DECORS --- */}
 
-            {/* Desktop: Dark Premium Gradient */}
-            <div className="absolute inset-0 bg-gradient-to-b from-[#0b1220] via-[#070a10] to-[#05070c] z-0" />
+            {/* Desktop: Dynamic Gradient based on theme */}
+            <div className="absolute inset-0 bg-gradient-to-b from-background via-background to-secondary/30 z-0" />
 
             {/* Subtle Noise */}
             <div className="absolute inset-0 bg-[url('/noise.svg')] opacity-[0.03] mix-blend-overlay pointer-events-none z-0" />
 
             {/* Glow Effects (Desktop/Tablet) */}
-            <div className="hidden md:block absolute top-0 left-1/4 w-[500px] h-[500px] bg-accent-blue/10 rounded-full blur-[120px] pointer-events-none z-0" />
+            <div className="hidden md:block absolute top-0 left-1/4 w-[500px] h-[500px] bg-primary/10 rounded-full blur-[120px] pointer-events-none z-0" />
 
             {/* --- MOBILE IMAGE BACKGROUND (< md) --- */}
             {imageSrc && (
@@ -51,7 +51,7 @@ export function HeroSection({
                         className="w-full h-full object-cover"
                     />
                     {/* Mobile Overlay: Stronger gradient for text readability */}
-                    <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/40 to-black/85" />
+                    <div className="absolute inset-0 bg-gradient-to-b from-background/90 via-background/60 to-background/95" />
                 </div>
             )}
 
@@ -63,7 +63,7 @@ export function HeroSection({
                     <div className="flex flex-col items-center md:items-start text-center md:text-left">
 
                         {/* Title */}
-                        <h1 className="text-4xl md:text-5xl lg:text-7xl font-display font-semibold tracking-tight leading-[0.95] text-white mb-6 text-balance max-w-[18ch]">
+                        <h1 className="text-4xl md:text-5xl lg:text-7xl font-display font-semibold tracking-tight leading-[0.95] text-foreground mb-6 text-balance max-w-[18ch]">
                             {title
                                 .split(" ")
                                 .map((word, index) => (
@@ -89,7 +89,7 @@ export function HeroSection({
                                 initial={{ opacity: 0, y: 10 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.5, delay: 0.4 }}
-                                className="text-base md:text-lg text-white/70 max-w-[48ch] mb-8 md:mb-10 leading-relaxed"
+                                className="text-base md:text-lg text-muted-foreground max-w-[48ch] mb-8 md:mb-10 leading-relaxed"
                             >
                                 {subtitle}
                             </motion.p>
@@ -107,14 +107,6 @@ export function HeroSection({
                                     const isFirst = idx === 0;
                                     const isOutline = cta.variant === 'outline';
 
-                                    // Mobile Logic: 
-                                    // 1st button -> Full width Primary Button
-                                    // 2nd button -> Text Link (pseudo-button look removed on mobile)
-                                    // Desktop Logic: Standard buttons side-by-side
-
-                                    // Check if we are on mobile (CSS check logic relies on classes)
-                                    // We use classes to handle visual differences
-
                                     if (cta.href.startsWith("http")) {
                                         return (
                                             <a
@@ -124,25 +116,20 @@ export function HeroSection({
                                                 rel={cta.rel}
                                                 className={cn(
                                                     "w-full md:w-auto transition-all",
-                                                    !isFirst && "md:block mt-2 md:mt-0 text-sm underline text-white md:text-base md:no-underline md:text-inherit"
-                                                    // Mobile: Second item looks like text link. Desktop: Standard button wrapper
+                                                    !isFirst && "md:block mt-2 md:mt-0 text-sm underline text-foreground md:text-base md:no-underline md:text-inherit"
                                                 )}
                                             >
-                                                {/* Render Button component usually, but for 2nd mobile item we might want just text if requested. 
-                                                     However user asked for "Secondary 'Bize Ulaşın' text link (buton değil)" on mobile.
-                                                 */}
                                                 <div className={cn(!isFirst ? "hidden md:block" : "block")}>
                                                     <Button
                                                         variant={cta.variant as any || 'accent'}
                                                         size="lg"
-                                                        className={cn("w-full md:min-w-[160px]", isOutline && "bg-white/5 border-white/10 backdrop-blur-sm")}
+                                                        className={cn("w-full md:min-w-[160px]", isOutline && "bg-surface/50 border-border backdrop-blur-sm hover:bg-surface")}
                                                     >
                                                         {cta.label}
                                                     </Button>
                                                 </div>
-                                                {/* Mobile Only Text Link for 2nd item */}
                                                 {!isFirst && (
-                                                    <span className="md:hidden text-white/80 hover:text-white font-medium">
+                                                    <span className="md:hidden text-muted-foreground hover:text-foreground font-medium">
                                                         {cta.label}
                                                     </span>
                                                 )}
@@ -155,10 +142,9 @@ export function HeroSection({
                                             key={idx}
                                             to={cta.href}
                                             className={cn(
-                                                "w-full md:w-auto flex justify-center", // Flex center for the text link
+                                                "w-full md:w-auto flex justify-center",
                                             )}
                                         >
-                                            {/* Primary (First) or Desktop View */}
                                             <div className={cn(
                                                 "w-full md:w-auto",
                                                 !isFirst ? "hidden md:block" : "block"
@@ -166,15 +152,14 @@ export function HeroSection({
                                                 <Button
                                                     variant={cta.variant as any || 'accent'}
                                                     size="lg"
-                                                    className={cn("w-full md:min-w-[160px]", isOutline && "bg-white/5 border-white/10 backdrop-blur-sm")}
+                                                    className={cn("w-full md:min-w-[160px]", isOutline && "bg-surface/50 border-border backdrop-blur-sm hover:bg-surface")}
                                                 >
                                                     {cta.label}
                                                 </Button>
                                             </div>
 
-                                            {/* Secondary CTA as Link on Mobile */}
                                             {!isFirst && (
-                                                <span className="md:hidden mt-2 text-white/80 hover:text-white font-medium text-sm border-b border-transparent hover:border-white transition-colors">
+                                                <span className="md:hidden mt-2 text-muted-foreground hover:text-foreground font-medium text-sm border-b border-transparent hover:border-foreground transition-colors">
                                                     {cta.label}
                                                 </span>
                                             )}
@@ -193,9 +178,9 @@ export function HeroSection({
                             transition={{ duration: 0.7, delay: 0.2, ease: "easeOut" }}
                             className="hidden md:flex justify-end relative z-10"
                         >
-                            <div className="relative rounded-2xl border border-white/10 bg-white/5 backdrop-blur overflow-hidden shadow-2xl max-w-lg lg:max-w-xl w-full aspect-[4/3] group">
+                            <div className="relative rounded-2xl border border-border bg-card/50 backdrop-blur overflow-hidden shadow-2xl max-w-lg lg:max-w-xl w-full aspect-[4/3] group">
                                 {/* Inner Gradient Overlay */}
-                                <div className="absolute inset-0 bg-gradient-to-tr from-accent-blue/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none z-10" />
+                                <div className="absolute inset-0 bg-gradient-to-tr from-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none z-10" />
 
                                 <img
                                     src={imageSrc}

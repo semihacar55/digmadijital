@@ -6,67 +6,118 @@
 
 @layer base {
 
-  /* Default to Dark Theme */
   :root {
-    --background: 0 0% 7%;
-    /* hsl(0 0% 7%) -> #121212 */
-    --foreground: 0 0% 100%;
-    /* #ffffff */
+    /* ------------------------------------------------------------------------- */
+    /* LIGHT MODE STYLES (PREMIUM)                                              */
+    /* Light mod “bembeyaz amatör” olmasın -> Kırık beyaz, subtle surfaces      */
+    /* ------------------------------------------------------------------------- */
 
-    --card: 0 0% 12%;
-    /* #1e1e1e - Surface 1 */
-    --card-foreground: 0 0% 100%;
+    /* User Requested Tokens */
+    --bg: 220 20% 97%;
+    /* #f3f4f6 (Cool light gray) NOT pure white */
+    --surface: 0 0% 100%;
+    /* #ffffff (Pure white cards) */
+    --surface-2: 220 14% 94%;
+    /* #eaecf0 (Slightly darker for hover/secondary) */
 
-    --popover: 0 0% 12%;
-    --popover-foreground: 0 0% 100%;
+    --border: 220 13% 91%;
+    /* #e2e8f0 */
 
-    --primary: 0 0% 7%;
-    /* Reverted to Black (#121212) for legacy button/bg support */
+    --text: 222 47% 11%;
+    /* #0f172a (Deep dark rich blue-black) */
+    --muted: 215 16% 47%;
+    /* #64748b */
+
+    --brand: 221 83% 53%;
+    /* #3b82f6 (Blue) */
+    --brand-2: 217 91% 60%;
+    /* Lighter Blue */
+    --ring: 221 83% 53%;
+
+    /* Standard Shadcn Mappings */
+    --background: var(--bg);
+    --foreground: var(--text);
+
+    --card: var(--surface);
+    --card-foreground: var(--text);
+
+    --popover: var(--surface);
+    --popover-foreground: var(--text);
+
+    --primary: var(--brand);
     --primary-foreground: 0 0% 100%;
-    /* White text on primary */
 
-    --secondary: 0 0% 16%;
-    /* #2a2a2a - Surface 2 */
-    --secondary-foreground: 0 0% 100%;
+    --secondary: var(--surface-2);
+    --secondary-foreground: var(--text);
 
-    --muted: 0 0% 20%;
-    --muted-foreground: 0 0% 60%;
-    /* #999999 */
+    --muted-bg: var(--border);
+    /* Custom for bg-muted usage */
+    --muted-foreground: var(--muted);
 
-    --accent: 0 0% 25%;
-    --accent-foreground: 0 0% 100%;
+    --accent: var(--surface-2);
+    --accent-foreground: var(--brand);
 
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
 
-    --border: 0 0% 20%;
-    --input: 0 0% 20%;
-    --ring: 0 0% 80%;
-
+    --input: var(--border);
     --radius: 0.75rem;
   }
 
-  /* Explicit Light Theme Override */
-  .premium-light {
-    --background: 220 33% 98%;
-    --foreground: 220 48% 9%;
-    --card: 0 0% 100%;
-    --card-foreground: 220 48% 9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 220 48% 9%;
-    --primary: 217 91% 60%;
+  .dark {
+    /* ------------------------------------------------------------------------- */
+    /* DARK MODE STYLES (PREMIUM)                                               */
+    /* Dark’ta siyah kalacak ama section’lar tamamen aynı siyah olmayacak       */
+    /* ------------------------------------------------------------------------- */
+
+    /* User Requested Tokens */
+    --bg: 222 47% 7%;
+    /* #0b0d11 (Deep Rich Black/Blue) */
+    --surface: 217 33% 12%;
+    /* #151921 (Distinct from bg, slightly lighter) */
+    --surface-2: 217 33% 15%;
+    /* #1a202a */
+
+    --border: 217 33% 15%;
+    /* Subtle border for dark mode */
+
+    --text: 210 40% 98%;
+    /* #f8fafc (Off-white) */
+    --muted: 215 20% 65%;
+    /* #94a3b8 (Readable gray) */
+
+    --brand: 217 91% 60%;
+    /* #60a5fa (Bright Blue) */
+    --brand-2: 221 83% 53%;
+    /* Darker Blue */
+    --ring: 217 91% 60%;
+
+    /* Mappings */
+    --background: var(--bg);
+    --foreground: var(--text);
+
+    --card: var(--surface);
+    --card-foreground: var(--text);
+
+    --popover: var(--surface);
+    --popover-foreground: var(--text);
+
+    --primary: var(--brand);
     --primary-foreground: 0 0% 100%;
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215 16% 47%;
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-    --destructive: 0 84.2% 60.2%;
+
+    --secondary: var(--surface-2);
+    --secondary-foreground: var(--text);
+
+    --muted-bg: 217 33% 15%;
+    --muted-foreground: var(--muted);
+
+    --accent: 217 33% 15%;
+    --accent-foreground: var(--text);
+
+    --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
-    --border: 214 32% 91%;
-    --input: 214 32% 91%;
-    --ring: 222.2 84% 4.9%;
+
+    --input: var(--border);
   }
 }
 
@@ -76,10 +127,10 @@
   }
 
   body {
-    @apply bg-background text-foreground font-sans antialiased overflow-x-hidden relative;
+    @apply bg-background text-foreground font-sans antialiased overflow-x-hidden relative transition-colors duration-300;
   }
 
-  /* Keep existing scrollbar */
+  /* Noise Overlay - Light/Dark Adaptive */
   body::before {
     content: "";
     @apply fixed inset-0 z-50 pointer-events-none opacity-[0.03] mix-blend-overlay;
@@ -97,16 +148,7 @@
   }
 
   ::-webkit-scrollbar-thumb {
-    @apply bg-white/10 rounded-full hover:bg-white/20 transition-colors;
-  }
-
-  .dark ::-webkit-scrollbar-thumb {
-    @apply bg-white/10;
-  }
-
-  /* Light mode scrollbar thumb needs to be visible */
-  :root:not(.dark) ::-webkit-scrollbar-thumb {
-    @apply bg-slate-300 hover:bg-slate-400;
+    @apply bg-border/80 hover:bg-muted-foreground/50 rounded-full transition-colors;
   }
 
   h1,
@@ -115,7 +157,7 @@
   h4,
   h5,
   h6 {
-    @apply font-display tracking-tight;
+    @apply font-display tracking-tight text-foreground;
   }
 }
 

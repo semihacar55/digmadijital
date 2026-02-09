@@ -5,6 +5,8 @@ import { ArrowRight, ArrowUpRight, BarChart2, Search, Share2, PenTool, TrendingU
 import { Link } from 'react-router-dom';
 import { FadeIn } from '../animations/FadeIn';
 import { supabase } from '../../lib/supabase';
+// import { cn } from '../../lib/utils'; // Unused
+
 
 // Map icon names (string) to Lucide components
 const iconMap: Record<string, React.ComponentType<{ size?: number; className?: string }>> = {
@@ -19,7 +21,12 @@ interface Service {
     icon: string;
 }
 
-const ServicesGrid = () => {
+
+interface ServicesGridProps {
+    limit?: number;
+}
+
+const ServicesGrid = ({ limit = 6 }: ServicesGridProps) => {
     const [services, setServices] = useState<Service[]>([]);
     const [loading, setLoading] = useState(true);
 
@@ -51,10 +58,10 @@ const ServicesGrid = () => {
     }, []);
 
 
-    if (loading) return <div className="text-center text-text-muted">Yükleniyor...</div>;
+    if (loading) return <div className="text-center text-muted-foreground">Yükleniyor...</div>;
 
-    // Limit to 6 items for the perfect grid layout
-    const displayServices = services.slice(0, 6);
+    // Apply limit if provided
+    const displayServices = limit ? services.slice(0, limit) : services;
 
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 max-w-7xl mx-auto">
@@ -68,32 +75,32 @@ const ServicesGrid = () => {
                         className="h-full"
                     >
                         <Link to={`/hizmetler/${service.slug}`} className="block h-full group">
-                            <div className="h-full flex flex-col p-6 rounded-2xl bg-white/5 border border-white/10 transition-all duration-300 hover:bg-white/10 hover:border-white/20 hover:-translate-y-1 relative overflow-hidden group-hover:shadow-2xl">
+                            <div className="h-full flex flex-col p-6 rounded-2xl bg-card border border-border transition-all duration-300 hover:bg-secondary/50 hover:border-primary/20 hover:-translate-y-1 relative overflow-hidden group-hover:shadow-2xl">
 
                                 {/* Header: Icon & Title */}
                                 <div className="flex items-start justify-between mb-4">
-                                    <div className="p-2.5 bg-white/5 rounded-lg border border-white/5 text-accent-blue group-hover:text-white group-hover:bg-accent-blue group-hover:border-accent-blue transition-colors">
+                                    <div className="p-2.5 bg-secondary rounded-lg border border-border text-primary group-hover:text-primary-foreground group-hover:bg-primary group-hover:border-primary transition-colors">
                                         <IconComponent size={24} />
                                     </div>
                                     <div className="opacity-0 group-hover:opacity-100 transition-opacity -mr-2 -mt-2">
-                                        <ArrowRight className="text-white/40 -rotate-45" size={20} />
+                                        <ArrowRight className="text-muted-foreground/40 -rotate-45" size={20} />
                                     </div>
                                 </div>
 
-                                <h3 className="text-xl font-bold text-white mb-3 line-clamp-2 group-hover:text-accent-blue transition-colors">
+                                <h3 className="text-xl font-bold text-foreground mb-3 line-clamp-2 group-hover:text-primary transition-colors">
                                     {service.title}
                                 </h3>
 
-                                <p className="text-white/60 text-sm leading-relaxed mb-6 line-clamp-3">
+                                <p className="text-muted-foreground text-sm leading-relaxed mb-6 line-clamp-3">
                                     {service.summary}
                                 </p>
 
-                                <div className="mt-auto pt-6 border-t border-white/5 flex items-center justify-between">
+                                <div className="mt-auto pt-6 border-t border-border flex items-center justify-between">
                                     <div className="flex items-center gap-3 group/btn">
-                                        <div className="w-10 h-10 rounded-full bg-accent-blue flex items-center justify-center text-white shadow-[0_0_15px_rgba(59,130,246,0.3)] transition-transform duration-300 group-hover:scale-110 group-hover:shadow-[0_0_20px_rgba(59,130,246,0.5)]">
+                                        <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-primary-foreground shadow-[0_0_15px_rgba(59,130,246,0.3)] transition-transform duration-300 group-hover:scale-110 group-hover:shadow-[0_0_20px_rgba(59,130,246,0.5)]">
                                             <ArrowUpRight className="w-5 h-5" strokeWidth={2.5} />
                                         </div>
-                                        <span className="text-lg font-bold text-white tracking-wide group-hover:text-accent-blue transition-colors">
+                                        <span className="text-lg font-bold text-foreground tracking-wide group-hover:text-primary transition-colors">
                                             İncele
                                         </span>
                                     </div>

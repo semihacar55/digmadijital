@@ -11,11 +11,22 @@ interface ButtonProps extends HTMLMotionProps<"button"> {
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     ({ className, variant = 'primary', size = 'md', children, ...props }, ref) => {
         const variants = {
-            primary: "bg-white text-primary hover:bg-gray-200 shadow-lg shadow-white/10",
-            secondary: "bg-secondary text-white hover:bg-gray-800 border border-white/10",
-            outline: "bg-transparent border border-white/20 text-white hover:bg-white/5 hover:border-white/40",
-            ghost: "bg-transparent text-text-muted hover:text-white hover:bg-white/5",
-            accent: "bg-accent-blue text-white hover:bg-blue-600 shadow-lg shadow-blue-500/20",
+            // Primary: Brand color background, white text (Standard)
+            // Or if previous design was white button on dark bg, we can adapt.
+            // Let's use semantic "primary" which maps to Brand color.
+            primary: "bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg shadow-brand/20",
+
+            // Secondary: Surface 2 (lighter/darker depending on mode)
+            secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80 border border-white/5",
+
+            // Outline: Bordered, transparent
+            outline: "bg-transparent border border-border text-foreground hover:bg-surface hover:text-foreground",
+
+            // Ghost: Transparent, hover effect
+            ghost: "bg-transparent text-muted-foreground hover:text-foreground hover:bg-surface",
+
+            // Accent: Specifically Brand Color (if Primary is different)
+            accent: "bg-accent-blue text-white hover:bg-brand-2 shadow-lg shadow-brand/20",
         };
 
         const sizes = {
@@ -30,7 +41,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 className={cn(
-                    "inline-flex items-center justify-center rounded-full font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-blue disabled:pointer-events-none disabled:opacity-50",
+                    "inline-flex items-center justify-center rounded-full font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50",
                     variants[variant],
                     sizes[size],
                     className

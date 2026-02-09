@@ -28,6 +28,7 @@ import FormSubmissionsList from './pages/admin/forms/FormSubmissionsList';
 import Settings from './pages/admin/settings/Settings';
 import HomepageManager from './pages/admin/homepage/HomepageManager';
 import WhyDigmaEditor from './pages/admin/homepage/WhyDigmaEditor';
+import CompanyInfoPage from './pages/admin/CompanyInfo';
 
 import HeaderManager from './pages/admin/header/HeaderManager';
 import FooterManager from './pages/admin/footer/FooterManager';
@@ -199,6 +200,10 @@ const router = createBrowserRouter([
           {
             path: "pages/contact",
             element: <ContactPageManager />,
+          },
+          {
+            path: "company-info",
+            element: <CompanyInfoPage />,
           },
           {
             path: "setup",

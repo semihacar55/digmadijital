@@ -2,7 +2,7 @@ import { supabase } from '../lib/supabase';
 
 export interface Page {
     id: string;
-    page_key: 'about' | 'contact';
+    page_key: 'about' | 'contact' | 'services';
     title: string;
     slug: string;
     hero_title: string | null;
@@ -23,9 +23,9 @@ export interface Page {
 }
 
 /**
- * Get page by key (about or contact)
+ * Get page by key (about or contact or services)
  */
-export const getPageByKey = async (key: 'about' | 'contact'): Promise<Page | null> => {
+export const getPageByKey = async (key: 'about' | 'contact' | 'services'): Promise<Page | null> => {
     try {
         const { data, error } = await supabase
             .from('pages')
@@ -49,7 +49,7 @@ export const getPageByKey = async (key: 'about' | 'contact'): Promise<Page | nul
  * Update page by key
  */
 export const updatePage = async (
-    key: 'about' | 'contact',
+    key: 'about' | 'contact' | 'services',
     updates: Partial<Omit<Page, 'id' | 'page_key' | 'created_at' | 'updated_at'>>
 ): Promise<{ success: boolean; data?: Page; error?: string }> => {
     try {
@@ -78,7 +78,7 @@ export const updatePage = async (
 /**
  * Get default page content (fallback)
  */
-export const getDefaultPageContent = (key: 'about' | 'contact'): Partial<Page> => {
+export const getDefaultPageContent = (key: 'about' | 'contact' | 'services'): Partial<Page> => {
     if (key === 'about') {
         return {
             page_key: 'about',
@@ -88,6 +88,16 @@ export const getDefaultPageContent = (key: 'about' | 'contact'): Partial<Page> =
             content_markdown: 'Ajans hikayesi burada olacak.',
             seo_title: 'Hakkımızda | Digma Dijital',
             seo_description: 'Digma Dijital hakkında bilgi edinin',
+        };
+    } else if (key === 'services') {
+        return {
+            page_key: 'services',
+            title: 'Hizmetlerimiz',
+            hero_title: 'Misyonumuz',
+            hero_subtitle: 'İşletmenizi dijital dünyada bir adım öne taşıyoruz',
+            content_markdown: 'Müşterilerimizin büyümesi, bizim en büyük motivasyon kaynağımızdır. Veri odaklı stratejiler ve yaratıcı çözümlerle işinizi büyütüyoruz.',
+            seo_title: 'Hizmetlerimiz | Digma Dijital',
+            seo_description: 'Dijital pazarlama, SEO, Sosyal Medya ve Web Tasarım hizmetleri.',
         };
     } else {
         return {
