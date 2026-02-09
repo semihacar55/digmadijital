@@ -1,7 +1,7 @@
 
 import { useEffect, useState } from 'react';
 import { ArrowRight, ArrowUpRight, BarChart2, Search, Share2, PenTool, TrendingUp, ShoppingBag, PieChart, Box } from 'lucide-react';
-import { GradientCard } from '../ui/GradientCard';
+
 import { Link } from 'react-router-dom';
 import { FadeIn } from '../animations/FadeIn';
 import { supabase } from '../../lib/supabase';
