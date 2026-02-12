@@ -75,7 +75,7 @@ const ServicesGrid = ({ limit = 6 }: ServicesGridProps) => {
                         className="h-full"
                     >
                         <Link to={`/hizmetler/${service.slug}`} className="block h-full group">
-                            <div className="h-full flex flex-col p-6 rounded-2xl bg-card border border-border transition-all duration-300 hover:bg-secondary/50 hover:border-primary/20 hover:-translate-y-1 relative overflow-hidden group-hover:shadow-2xl">
+                            <div className="h-full flex flex-col p-6 rounded-2xl bg-surface/72 backdrop-blur-md border border-white/10 transition-all duration-300 hover:bg-surface-2/80 hover:border-accent/30 hover:-translate-y-1 relative overflow-hidden group-hover:shadow-lg group-hover:shadow-accent/10">
 
                                 {/* Header: Icon & Title */}
                                 <div className="flex items-start justify-between mb-4">
@@ -97,7 +97,7 @@ const ServicesGrid = ({ limit = 6 }: ServicesGridProps) => {
 
                                 <div className="mt-auto pt-6 border-t border-border flex items-center justify-between">
                                     <div className="flex items-center gap-3 group/btn">
-                                        <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-primary-foreground shadow-[0_0_15px_rgba(59,130,246,0.3)] transition-transform duration-300 group-hover:scale-110 group-hover:shadow-[0_0_20px_rgba(59,130,246,0.5)]">
+                                        <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-primary-foreground shadow-[0_0_15px_rgba(255,210,63,0.3)] transition-transform duration-300 group-hover:scale-110 group-hover:shadow-[0_0_20px_rgba(255,210,63,0.5)]">
                                             <ArrowUpRight className="w-5 h-5" strokeWidth={2.5} />
                                         </div>
                                         <span className="text-lg font-bold text-foreground tracking-wide group-hover:text-primary transition-colors">

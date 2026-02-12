@@ -112,7 +112,7 @@ export const NewsletterForm = ({
                     </div>
                     <Button
                         type="submit"
-                        variant="accent"
+                        variant="default"
                         className={isCard ? 'w-full' : ''}
                     >
                         <Mail size={18} className="mr-2" />

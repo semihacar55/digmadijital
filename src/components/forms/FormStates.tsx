@@ -59,7 +59,7 @@ export const FormError = ({
         <h3 className="text-2xl font-bold text-white mb-2">{title}</h3>
         <p className="text-text-muted mb-8">{message}</p>
         {onRetry && (
-            <Button variant="accent" onClick={onRetry}>
+            <Button variant="default" onClick={onRetry}>
                 {retryLabel}
             </Button>
         )}

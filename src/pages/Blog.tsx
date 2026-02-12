@@ -1,5 +1,5 @@
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { FadeIn } from '../components/animations/FadeIn';
@@ -7,6 +7,7 @@ import { PremiumBackground } from '../components/ui/PremiumBackground';
 import { PageHero } from '../components/ui/PageHero';
 import { ArticleCard } from '../components/ui/blog-post-card';
 import SEO from '../components/seo/SEO';
+import { Tabs, TabsList, TabsTrigger } from '../components/ui/tabs.tsx';
 
 interface Post {
     id: string;
@@ -23,6 +24,7 @@ interface Post {
 const Blog = () => {
     const [posts, setPosts] = useState<Post[]>([]);
     const [loading, setLoading] = useState(true);
+    const [selectedCategory, setSelectedCategory] = useState<string>('all');
 
     useEffect(() => {
         const fetchPosts = async () => {
@@ -37,6 +39,17 @@ const Blog = () => {
         };
         fetchPosts();
     }, []);
+
+    const filteredPosts = useMemo(() => {
+        if (selectedCategory === 'all') return posts;
+        return posts.filter(post => {
+            const category = post.category.toLowerCase();
+            if (selectedCategory === 'sosyal-medya') {
+                return category.includes('sosyal medya') || category.includes('sosyal-media');
+            }
+            return category.includes(selectedCategory.toLowerCase());
+        });
+    }, [posts, selectedCategory]);
 
     const calculateReadingTime = (text: string) => {
         if (!text) return 0;
@@ -70,28 +83,60 @@ const Blog = () => {
                             Henüz yazı bulunmuyor.
                         </div>
                     ) : (
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-stretch">
-                            {posts.map((post, index) => (
-                                <FadeIn key={post.id} delay={index * 0.1} fullWidth className="h-full">
-                                    <Link to={`/blog/${post.slug}`} className="block h-full">
-                                        <ArticleCard
-                                            headline={post.title}
-                                            excerpt={post.summary || post.content?.substring(0, 160) + '...' || ''}
-                                            cover={post.cover_image}
-                                            tag={post.category}
-                                            publishedAt={new Date(post.published_at)}
-                                            writer="Digma Ekibi"
-                                            readingTime={calculateReadingTime(post.content || post.summary || '')}
-                                            clampLines={3}
-                                        />
-                                    </Link>
-                                </FadeIn>
-                            ))}
-                        </div>
+                        <>
+                            {/* Category Tabs */}
+                            <div className="mb-12 flex justify-center">
+                                <Tabs defaultValue="all" className="w-full max-w-4xl">
+                                    <TabsList className="w-full grid grid-cols-2 md:grid-cols-5 lg:w-auto lg:inline-grid">
+                                        <TabsTrigger value="all" onClick={() => setSelectedCategory('all')}>
+                                            Tümü ({posts.length})
+                                        </TabsTrigger>
+                                        <TabsTrigger value="seo" onClick={() => setSelectedCategory('seo')}>
+                                            SEO ({posts.filter(p => p.category.toLowerCase() === 'seo').length})
+                                        </TabsTrigger>
+                                        <TabsTrigger value="pazarlama" onClick={() => setSelectedCategory('pazarlama')}>
+                                            Pazarlama ({posts.filter(p => p.category.toLowerCase().includes('pazarlama')).length})
+                                        </TabsTrigger>
+                                        <TabsTrigger value="sosyal-medya" onClick={() => setSelectedCategory('sosyal-medya')}>
+                                            Sosyal Medya ({posts.filter(p => p.category.toLowerCase().includes('sosyal')).length})
+                                        </TabsTrigger>
+                                        <TabsTrigger value="teknoloji" onClick={() => setSelectedCategory('teknoloji')}>
+                                            Teknoloji ({posts.filter(p => p.category.toLowerCase().includes('teknoloji')).length})
+                                        </TabsTrigger>
+                                    </TabsList>
+                                </Tabs>
+                            </div>
+
+                            {/* Blog Posts Grid */}
+                            {filteredPosts.length > 0 ? (
+                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-stretch">
+                                    {filteredPosts.map((post, index) => (
+                                        <FadeIn key={post.id} delay={index * 0.1} fullWidth className="h-full">
+                                            <Link to={`/blog/${post.slug}`} className="block h-full">
+                                                <ArticleCard
+                                                    headline={post.title}
+                                                    excerpt={post.summary || post.content?.substring(0, 160) + '...' || ''}
+                                                    cover={post.cover_image}
+                                                    tag={post.category}
+                                                    publishedAt={new Date(post.published_at)}
+                                                    writer="Digma Ekibi"
+                                                    readingTime={calculateReadingTime(post.content || post.summary || '')}
+                                                    clampLines={3}
+                                                />
+                                            </Link>
+                                        </FadeIn>
+                                    ))}
+                                </div>
+                            ) : (
+                                <div className="text-center py-20">
+                                    <p className="text-text-muted text-lg">Bu kategoride henüz yazı bulunmuyor.</p>
+                                </div>
+                            )}
+                        </>
                     )}
                 </div>
             </div>
-        </PremiumBackground >
+        </PremiumBackground>
     );
 };
 

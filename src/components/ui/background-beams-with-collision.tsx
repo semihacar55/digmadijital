@@ -61,7 +61,7 @@ export const BackgroundBeamsWithCollision = ({
         <div
             ref={parentRef}
             className={cn(
-                'relative min-h-[90vh] flex items-center pt-24 overflow-hidden bg-gradient-to-b from-[#0b1220] to-[#0f1a2e]',
+                'relative min-h-[90vh] flex items-center pt-24 overflow-hidden bg-gradient-to-b from-background to-background/80',
                 className
             )}
         >
@@ -191,7 +191,7 @@ const CollisionMechanism = ({
                     repeatDelay: beamOptions.repeatDelay || 0,
                 }}
                 className={cn(
-                    'absolute left-0 top-20 m-auto h-14 w-px rounded-full bg-gradient-to-t from-blue-500 via-blue-400 to-transparent pointer-events-none',
+                    'absolute left-0 top-20 m-auto h-14 w-px rounded-full bg-gradient-to-t from-accent-violet via-accent-violet/50 to-transparent pointer-events-none',
                     beamOptions.className
                 )}
             />
@@ -243,7 +243,7 @@ const Explosion = ({ style, className }: { style: React.CSSProperties; className
                 animate={{ opacity: [0, 1, 0] }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 1.5, ease: 'easeOut' }}
-                className="absolute -inset-x-10 top-0 m-auto h-2 w-10 rounded-full bg-gradient-to-r from-transparent via-blue-500 to-transparent blur-sm"
+                className="absolute -inset-x-10 top-0 m-auto h-2 w-10 rounded-full bg-gradient-to-r from-transparent via-accent-violet to-transparent blur-sm"
             ></motion.div>
             {spans.map((span) => (
                 <motion.span
@@ -255,7 +255,7 @@ const Explosion = ({ style, className }: { style: React.CSSProperties; className
                         opacity: 0,
                     }}
                     transition={{ duration: Math.random() * 1.5 + 0.5, ease: 'easeOut' }}
-                    className="absolute h-1 w-1 rounded-full bg-gradient-to-b from-blue-500 to-blue-600"
+                    className="absolute h-1 w-1 rounded-full bg-gradient-to-b from-primary-amber to-accent-teal"
                 />
             ))}
         </div>

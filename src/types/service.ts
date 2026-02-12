@@ -10,7 +10,7 @@ export interface CTATemplate {
     key: string;                    // Unique identifier (e.g., 'get-offer', 'contact')
     defaultLabel: string;           // Default button text
     defaultHref: string;            // Default link
-    defaultVariant: 'accent' | 'outline' | 'secondary' | 'ghost';
+    defaultVariant: 'default' | 'outline' | 'secondary' | 'ghost' | 'accent';
     defaultTarget: 'same_tab' | 'new_tab';
     order: number;                  // Display order
 }
@@ -22,7 +22,7 @@ export interface CTATemplate {
 export interface CTAOverride {
     label?: string;                 // Override defaultLabel
     href?: string;                  // Override defaultHref
-    variant?: 'accent' | 'outline' | 'secondary' | 'ghost';
+    variant?: 'default' | 'outline' | 'secondary' | 'ghost' | 'accent';
     target?: 'same_tab' | 'new_tab';
     isEnabled?: boolean;            // Default: true if not specified
 }

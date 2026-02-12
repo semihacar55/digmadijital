@@ -42,8 +42,9 @@ export default {
                 accent: {
                     DEFAULT: "hsl(var(--accent))",
                     foreground: "hsl(var(--accent-foreground))",
-                    blue: "#3B82F6", // Legacy support
-                    green: "#10B981", // Legacy support
+                    magenta: "hsl(var(--brand))",      // Primary CTA
+                    gold: "hsl(var(--brand-2))",       // Secondary highlights
+                    emerald: "hsl(var(--accent))",     // Tertiary, success
                 },
                 destructive: {
                     DEFAULT: "hsl(var(--destructive))",
@@ -69,6 +70,20 @@ export default {
                     xl: "1280px",
                     "2xl": "1400px",
                 },
+            },
+            keyframes: {
+                "accordion-down": {
+                    from: { height: "0" },
+                    to: { height: "var(--radix-accordion-content-height)" },
+                },
+                "accordion-up": {
+                    from: { height: "var(--radix-accordion-content-height)" },
+                    to: { height: "0" },
+                },
+            },
+            animation: {
+                "accordion-down": "accordion-down 0.2s ease-out",
+                "accordion-up": "accordion-up 0.2s ease-out",
             },
         },
     },

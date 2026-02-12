@@ -6,7 +6,7 @@ import { Button } from "./Button"; // Use our custom Button with variants
 interface CTA {
     label: string;
     href: string;
-    variant?: 'accent' | 'outline' | 'secondary' | 'ghost';
+    variant?: 'default' | 'outline' | 'secondary' | 'ghost' | 'accent';
     target?: string;
     rel?: string;
 }
@@ -121,7 +121,7 @@ export function HeroSection({
                                             >
                                                 <div className={cn(!isFirst ? "hidden md:block" : "block")}>
                                                     <Button
-                                                        variant={cta.variant as any || 'accent'}
+                                                        variant={cta.variant as any || 'default'}
                                                         size="lg"
                                                         className={cn("w-full md:min-w-[160px]", isOutline && "bg-surface/50 border-border backdrop-blur-sm hover:bg-surface")}
                                                     >
@@ -150,7 +150,7 @@ export function HeroSection({
                                                 !isFirst ? "hidden md:block" : "block"
                                             )}>
                                                 <Button
-                                                    variant={cta.variant as any || 'accent'}
+                                                    variant={cta.variant as any || 'default'}
                                                     size="lg"
                                                     className={cn("w-full md:min-w-[160px]", isOutline && "bg-surface/50 border-border backdrop-blur-sm hover:bg-surface")}
                                                 >

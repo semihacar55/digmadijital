@@ -126,15 +126,15 @@ const Contact = () => {
                 breadcrumb={[{ label: 'Digma' }, { label: 'İletişim' }]}
             />
 
-            <div className="pb-12 px-4">
-                <Section>
+            <div className="pb-12 px-4 bg-transparent">
+                <Section className="bg-surface/30 rounded-3xl">
                     <FadeIn>
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24">
                             {/* Left: Info */}
                             <div className="space-y-6">
                                 {companyInfo.email && (
                                     <div className="flex items-start gap-4">
-                                        <div className="w-12 h-12 bg-white/5 rounded-full flex items-center justify-center text-accent-blue shrink-0">
+                                        <div className="w-12 h-12 bg-white/5 rounded-full flex items-center justify-center text-accent-gold shrink-0">
                                             <Mail size={24} />
                                         </div>
                                         <div>
@@ -145,7 +145,7 @@ const Contact = () => {
                                 )}
                                 {companyInfo.phone && (
                                     <div className="flex items-start gap-4">
-                                        <div className="w-12 h-12 bg-white/5 rounded-full flex items-center justify-center text-accent-blue shrink-0">
+                                        <div className="w-12 h-12 bg-white/5 rounded-full flex items-center justify-center text-accent-gold shrink-0">
                                             <Phone size={24} />
                                         </div>
                                         <div>
@@ -159,7 +159,7 @@ const Contact = () => {
                                 )}
                                 {companyInfo.address && (
                                     <div className="flex items-start gap-4">
-                                        <div className="w-12 h-12 bg-white/5 rounded-full flex items-center justify-center text-accent-blue shrink-0">
+                                        <div className="w-12 h-12 bg-white/5 rounded-full flex items-center justify-center text-accent-gold shrink-0">
                                             <MapPin size={24} />
                                         </div>
                                         <div>
@@ -177,7 +177,7 @@ const Contact = () => {
                             </div>
 
                             {/* Right: Form */}
-                            <div className="bg-secondary/30 p-8 rounded-2xl border border-white/5">
+                            <div className="bg-surface/30 p-8 rounded-2xl border border-white/5">
                                 {!formEnabled ? (
                                     <div className="h-full flex items-center justify-center text-center py-12">
                                         <p className="text-text-muted">İletişim formu şu anda devre dışı.</p>
@@ -198,7 +198,7 @@ const Contact = () => {
                                         </div>
                                         <h3 className="text-2xl font-bold text-white mb-2">Bir Hata Oluştu</h3>
                                         <p className="text-text-muted mb-8">{errorMsg}</p>
-                                        <Button variant="accent" onClick={handleRetry}>Tekrar Dene</Button>
+                                        <Button variant="default" onClick={handleRetry}>Tekrar Dene</Button>
                                     </div>
                                 ) : (
                                     <form onSubmit={handleSubmit} className="space-y-6">
@@ -259,7 +259,7 @@ const Contact = () => {
 
                                         <Button
                                             type="submit"
-                                            variant="accent"
+                                            variant="default"
                                             className="w-full h-12 text-lg"
                                             disabled={status === 'submitting'}
                                         >

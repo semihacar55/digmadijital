@@ -9,6 +9,7 @@ import { ArrowRight, Smartphone, Target, TrendingUp, Zap } from 'lucide-react';
 import { getPageByKey, getDefaultPageContent } from '../services/pages.service';
 import ReactMarkdown from 'react-markdown';
 import { Link } from 'react-router-dom';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../components/ui/accordion.tsx';
 
 const Services = () => {
     // const [loading, setLoading] = useState(true); // Unused
@@ -63,7 +64,7 @@ const Services = () => {
                             <div className="inline-flex items-center gap-2 bg-white/5 backdrop-blur-sm border border-white/10 rounded-full px-4 py-2">
                                 <p className="text-sm text-text-muted/80">
                                     <span>Digma</span>
-                                    <span className="text-accent-blue mx-2">/</span>
+                                    <span className="text-accent-gold mx-2">/</span>
                                     <span className="text-white">Hizmetler</span>
                                 </p>
                             </div>
@@ -90,13 +91,13 @@ const Services = () => {
             </Section>
 
             {/* Mission Section (Editable) */}
-            <Section className="bg-secondary/20 py-20">
+            <Section className="bg-surface-2/20 py-20">
                 <div className="container mx-auto px-4">
                     <div className="flex flex-col md:flex-row gap-12 items-center">
                         <div className="w-full md:w-1/2">
                             <FadeIn>
-                                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent-blue/10 text-accent-blue text-sm font-medium mb-4">
-                                    <span className="w-2 h-2 rounded-full bg-accent-blue"></span>
+                                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent-gold/10 text-accent-gold text-sm font-medium mb-4">
+                                    <span className="w-2 h-2 rounded-full bg-accent-gold"></span>
                                     Misyonumuz
                                 </div>
                                 <h2 className="text-3xl md:text-4xl font-bold mb-6">
@@ -147,14 +148,14 @@ const Services = () => {
                                 <div className="group relative">
                                     {/* Connector Line (Desktop) */}
                                     {index < processSteps.length - 1 && (
-                                        <div className="hidden md:block absolute top-[2.5rem] left-1/2 w-full h-[2px] bg-white/5 z-0 group-hover:bg-gradient-to-r group-hover:from-accent-blue/50 group-hover:to-transparent transition-all duration-500"></div>
+                                        <div className="hidden md:block absolute top-[2.5rem] left-1/2 w-full h-[2px] bg-white/5 z-0 group-hover:bg-gradient-to-r group-hover:from-accent-gold/40 group-hover:to-transparent transition-all duration-500"></div>
                                     )}
 
                                     <div className="relative z-10 flex flex-col items-center text-center">
-                                        <div className="w-20 h-20 rounded-2xl bg-secondary border border-white/10 flex items-center justify-center mb-6 group-hover:border-accent-blue/50 group-hover:shadow-[0_0_30px_rgba(59,130,246,0.15)] transition-all duration-300">
-                                            <step.icon className="w-8 h-8 text-white group-hover:text-accent-blue transition-colors duration-300" />
+                                        <div className="w-20 h-20 rounded-2xl bg-secondary border border-white/10 flex items-center justify-center mb-6 group-hover:border-accent-gold/50 group-hover:shadow-[0_0_30px_rgba(245,194,54,0.15)] transition-all duration-300">
+                                            <step.icon className="w-8 h-8 text-white group-hover:text-accent-gold transition-colors duration-300" />
                                         </div>
-                                        <div className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-white/5 border border-white/10 text-sm font-bold text-accent-blue mb-4">
+                                        <div className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-white/5 border border-white/10 text-sm font-bold text-accent-gold mb-4">
                                             {index + 1}
                                         </div>
                                         <h3 className="text-xl font-bold mb-3">{step.title}</h3>
@@ -167,11 +168,60 @@ const Services = () => {
                 </div>
             </Section>
 
+            {/* FAQ Section with Premium Accordion */}
+            <Section className="py-20 bg-surface-2/20">
+                <div className="container mx-auto px-4">
+                    <div className="text-center max-w-3xl mx-auto mb-12">
+                        <h2 className="text-3xl md:text-5xl font-bold mb-6">Sıkça Sorulan Sorular</h2>
+                        <p className="text-text-muted text-lg">Hizmetlerimiz hakkında en çok merak edilen sorular</p>
+                    </div>
+
+                    <div className="max-w-4xl mx-auto">
+                        <Accordion type="single" collapsible className="space-y-4">
+                            <AccordionItem value="item-1" className="bg-surface/30 backdrop-blur-sm rounded-xl px-6 border border-white/10">
+                                <AccordionTrigger>Dijital pazarlama hizmetleriniz neler içeriyor?</AccordionTrigger>
+                                <AccordionContent>
+                                    Dijital pazarlama hizmetlerimiz; Google Ads, Meta Ads, SEO, sosyal medya yönetimi, içerik pazarlaması ve veri analitiği gibi kapsamlı çözümleri içerir. Her marka için özelleştirilmiş stratejiler geliştiririz.
+                                </AccordionContent>
+                            </AccordionItem>
+
+                            <AccordionItem value="item-2" className="bg-surface/30 backdrop-blur-sm rounded-xl px-6 border border-white/10">
+                                <AccordionTrigger>Fiyatlandırma nasıl çalışıyor?</AccordionTrigger>
+                                <AccordionContent>
+                                    Fiyatlandırmamız projenizin kapsamına, hedeflerinize ve bütçenize göre özelleştirilir. Ücretsiz danışmanlık görüşmesinde ihtiyaçlarınızı dinler ve size özel bir teklif hazırlarız. Şeffaf ve esnek ödeme seçenekleri sunuyoruz.
+                                </AccordionContent>
+                            </AccordionItem>
+
+                            <AccordionItem value="item-3" className="bg-surface/30 backdrop-blur-sm rounded-xl px-6 border border-white/10">
+                                <AccordionTrigger>Sonuçları ne kadar sürede görebilirim?</AccordionTrigger>
+                                <AccordionContent>
+                                    İlk sonuçlar genellikle 2-4 hafta içinde görülmeye başlar. Ancak kalıcı ve sürdürülebilir büyüme için 3-6 aylık bir süreç öneriyoruz. Her ay detaylı raporlarla ilerlemeyi takip edebilirsiniz.
+                                </AccordionContent>
+                            </AccordionItem>
+
+                            <AccordionItem value="item-4" className="bg-surface/30 backdrop-blur-sm rounded-xl px-6 border border-white/10">
+                                <AccordionTrigger>Hangi sektörlere hizmet veriyorsunuz?</AccordionTrigger>
+                                <AccordionContent>
+                                    E-ticaret, teknoloji, sağlık, eğitim, gayrimenkul, finans ve perakende dahil birçok sektörde deneyimliyiz. Her sektörün kendine özgü dinamiklerini anlayarak stratejiler geliştiririz.
+                                </AccordionContent>
+                            </AccordionItem>
+
+                            <AccordionItem value="item-5" className="bg-surface/30 backdrop-blur-sm rounded-xl px-6 border border-white/10">
+                                <AccordionTrigger>Sözleşme süreleri nasıl?</AccordionTrigger>
+                                <AccordionContent>
+                                    En az 3 aylık sözleşmeler önersek de, uzun vadeli ortaklıklar kuruyoruz. Dönemsel kampanyalar için özel paketlerimiz de mevcuttur. Esneklik ve başarı odaklı çalışmayı esas alırız.
+                                </AccordionContent>
+                            </AccordionItem>
+                        </Accordion>
+                    </div>
+                </div>
+            </Section>
+
             {/* CTA Section */}
             <Section className="py-0 mb-20">
                 <FadeIn>
                     <div className="container mx-auto px-4">
-                        <div className="bg-gradient-to-br from-accent-blue/20 to-accent-purple/10 rounded-3xl p-8 md:p-16 text-center border border-white/10 relative overflow-hidden">
+                        <div className="bg-gradient-to-br from-accent-magenta/20 to-accent-gold/10 rounded-3xl p-8 md:p-16 text-center border border-white/10 relative overflow-hidden">
                             <div className="absolute inset-0 bg-primary/20 backdrop-blur-sm z-0"></div>
                             <div className="relative z-10 max-w-2xl mx-auto">
                                 <h2 className="text-3xl md:text-5xl font-bold mb-6">Projenizi Hayata Geçirelim</h2>
@@ -179,7 +229,7 @@ const Services = () => {
                                     Hemen ücretsiz analiz alın veya detayları görüşmek için bizimle iletişime geçin.
                                 </p>
                                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                                    <Button variant="accent" size="lg" onClick={() => document.getElementById('ucretsiz-analiz')?.scrollIntoView({ behavior: 'smooth' })}>
+                                    <Button variant="default" size="lg" onClick={() => document.getElementById('ucretsiz-analiz')?.scrollIntoView({ behavior: 'smooth' })}>
                                         Ücretsiz Analiz Al
                                         <ArrowRight className="ml-2 w-4 h-4" />
                                     </Button>

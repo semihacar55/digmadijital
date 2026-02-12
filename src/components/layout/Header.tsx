@@ -3,7 +3,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, ArrowRight, ChevronDown } from 'lucide-react';
 import { Button } from '../ui/Button';
-import { cn } from '../ui/Button';
+import { cn } from '../../lib/utils';
 import { supabase } from '../../lib/supabase';
 
 
@@ -122,7 +122,7 @@ const Header = () => {
                         <span>EN</span>
                     </button>
 
-                    <Button variant="accent" size="sm" className="hidden md:inline-flex" onClick={handleAnalysisClick}>
+                    <Button variant="default" size="sm" className="hidden md:inline-flex" onClick={handleAnalysisClick}>
                         Ücretsiz Analiz Al
                     </Button>
 
@@ -152,7 +152,7 @@ const Header = () => {
                                     onClick={() => setMobileServicesOpen(!mobileServicesOpen)}
                                 >
                                     Hizmetler
-                                    <ChevronDown size={18} className={`transition-transform duration-300 ${mobileServicesOpen ? 'rotate-180' : ''}`} />
+                                    <ChevronDown size={18} className={`transition - transform duration - 300 ${mobileServicesOpen ? 'rotate-180' : ''} `} />
                                 </div>
                                 <AnimatePresence>
                                     {mobileServicesOpen && (
@@ -186,7 +186,7 @@ const Header = () => {
                             <Link to="/blog" className="text-lg font-medium text-foreground/80 hover:text-foreground transition-colors">Blog</Link>
                             <Link to="/iletisim" className="text-lg font-medium text-foreground/80 hover:text-foreground transition-colors">İletişim</Link>
 
-                            <Button variant="accent" className="mt-4 w-full justify-between group" onClick={handleAnalysisClick}>
+                            <Button variant="default" className="mt-4 w-full justify-between group" onClick={handleAnalysisClick}>
                                 Ücretsiz Analiz Al
                                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                             </Button>

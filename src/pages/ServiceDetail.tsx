@@ -18,7 +18,7 @@ const CTA_TEMPLATES: CTATemplate[] = [
         key: 'get-offer',
         defaultLabel: 'Teklif Al',
         defaultHref: '/#ucretsiz-analiz',
-        defaultVariant: 'accent',
+        defaultVariant: 'default',
         defaultTarget: 'same_tab',
         order: 0
     },
@@ -93,7 +93,7 @@ const ServiceDetail = () => {
         label: string,
         href: string,
         target: 'same_tab' | 'new_tab',
-        variant: 'accent' | 'outline' | 'secondary' | 'ghost' = 'accent',
+        variant: 'default' | 'outline' | 'secondary' | 'ghost' | 'accent' = 'default',
         className: string = 'rounded-full px-7 h-12 text-base'
     ) => {
 
@@ -106,7 +106,7 @@ const ServiceDetail = () => {
         const button = (
             <Button variant={variant} size="lg" className={className}>
                 {label}
-                {variant === 'accent' && <ArrowRight className="ml-2 w-5 h-5" />}
+                {variant === 'default' && <ArrowRight className="ml-2 w-5 h-5" />}
                 {variant === 'outline' && label.includes('Ulaş') && <MessageSquare size={20} className="mr-2" />}
             </Button>
         );
@@ -182,8 +182,8 @@ const ServiceDetail = () => {
                 schema={graphSchema}
             />
 
-            {/* Page Wrapper - Default Theme */}
-            <div className="min-h-screen relative overflow-hidden bg-background text-foreground">
+            {/* Page Wrapper - Default Theme - Transparent for Global Background */}
+            <div className="min-h-screen relative overflow-hidden bg-transparent text-foreground">
 
                 {/* HERO SECTION - Aceternity Landing Style */}
                 <HeroSection
@@ -202,12 +202,12 @@ const ServiceDetail = () => {
 
                 {/* BENEFITS STRIP - Glass Theme */}
                 {service.benefits && service.benefits.length > 0 && (
-                    <div className="border-y border-white/10 bg-white/5 backdrop-blur-md">
+                    <div className="border-y border-white/10 bg-surface/30 backdrop-blur-md">
                         <div className="container mx-auto px-4">
                             <div className="grid grid-cols-2 lg:grid-cols-4 divide-x divide-white/10">
                                 {service.benefits.map((benefit, index) => (
                                     <div key={index} className="p-6 flex items-center gap-3 justify-center text-center lg:text-left lg:justify-start">
-                                        <CheckCircle2 className="text-accent-blue shrink-0 w-5 h-5" />
+                                        <CheckCircle2 className="text-accent-emerald shrink-0 w-5 h-5" />
                                         <span className="font-medium text-white/90">{benefit.title}</span>
                                     </div>
                                 ))}
@@ -239,8 +239,8 @@ const ServiceDetail = () => {
                                         </div>
                                         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                                             {service.process.map((step, index) => (
-                                                <div key={index} className="bg-white/5 border border-white/10 backdrop-blur-sm p-8 rounded-2xl relative group hover:border-accent-blue/50 hover:bg-white/10 transition-all duration-300">
-                                                    <div className="text-4xl font-bold text-accent-blue/20 absolute top-4 right-6 group-hover:text-accent-blue/40 transition-colors">
+                                                <div key={index} className="bg-white/5 border border-white/10 backdrop-blur-sm p-8 rounded-2xl relative group hover:border-accent-gold/50 hover:bg-white/10 transition-all duration-300">
+                                                    <div className="text-4xl font-bold text-accent-gold/20 absolute top-4 right-6 group-hover:text-accent-gold/40 transition-colors">
                                                         {index + 1}
                                                     </div>
                                                     <h3 className="text-xl font-bold text-white mb-4 relative z-10">{step.title}</h3>
@@ -257,7 +257,7 @@ const ServiceDetail = () => {
 
                 {/* FAQ SECTION - Glass Theme */}
                 {service.faq && service.faq.length > 0 && (
-                    <Section className="py-24 border-t border-white/5">
+                    <Section className="py-24 border-t border-white/5 bg-surface-2/20">
                         <div className="container mx-auto px-4 max-w-3xl">
                             <div className="text-center mb-16">
                                 <h2 className="text-3xl md:text-4xl font-display font-bold text-white mb-4">Sıkça Sorulan Sorular</h2>
@@ -272,7 +272,7 @@ const ServiceDetail = () => {
                                             >
                                                 <span className="font-medium text-white text-lg pr-8">{item.question}</span>
                                                 {openFaqIndex === index ? (
-                                                    <Minus className="text-accent-blue shrink-0" />
+                                                    <Minus className="text-accent-emerald shrink-0" />
                                                 ) : (
                                                     <Plus className="text-white/50 shrink-0 group-hover:text-white" />
                                                 )}
@@ -293,10 +293,10 @@ const ServiceDetail = () => {
                 {/* FINAL CTA - Dark Premium */}
                 <Section className="py-24">
                     <div className="container mx-auto px-4">
-                        <div className="max-w-5xl mx-auto text-center bg-gradient-to-br from-accent-blue/10 via-white/5 to-transparent border border-white/10 p-12 md:p-20 rounded-3xl relative overflow-hidden backdrop-blur-md shadow-2xl">
-                            {/* Decorative Glow */}
-                            <div className="absolute top-0 right-0 w-96 h-96 bg-accent-blue/20 rounded-full blur-[128px] pointer-events-none -translate-y-1/2 translate-x-1/2" />
-                            <div className="absolute bottom-0 left-0 w-64 h-64 bg-accent-blue/10 rounded-full blur-[96px] pointer-events-none translate-y-1/2 -translate-x-1/2" />
+                        <div className="max-w-5xl mx-auto text-center bg-gradient-to-br from-accent-magenta/12 via-white/5 to-transparent border border-white/10 p-12 md:p-20 rounded-3xl relative overflow-hidden backdrop-blur-md shadow-2xl">
+                            {/* Background Orbs */}
+                            <div className="absolute top-0 right-0 w-96 h-96 bg-accent-magenta/15 rounded-full blur-[128px] pointer-events-none -translate-y-1/2 translate-x-1/2" />
+                            <div className="absolute bottom-0 left-0 w-64 h-64 bg-accent-gold/12 rounded-full blur-[96px] pointer-events-none translate-y-1/2 -translate-x-1/2" />
 
                             <div className="relative z-10">
                                 <h2 className="text-4xl md:text-6xl font-display font-bold text-white mb-8 tracking-tight">
@@ -312,7 +312,7 @@ const ServiceDetail = () => {
                                             btn.href,
                                             btn.target,
                                             btn.variant,
-                                            'w-full sm:w-auto min-h-[60px] h-auto whitespace-normal py-4 px-10 text-lg font-semibold shadow-lg hover:shadow-accent-blue/25 hover:scale-105 transition-all duration-300'
+                                            'w-full sm:w-auto min-h-[60px] h-auto whitespace-normal py-4 px-10 text-lg font-semibold shadow-lg hover:shadow-accent-gold/25 hover:scale-105 transition-all duration-300'
                                         )}
                                     </span>
                                 ))}
